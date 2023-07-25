@@ -1,1 +1,1 @@
-# Web_mp
+Web development mini project repository
