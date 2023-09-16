@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login and Signup Page</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <div id="loginError" class="error"></div>
+        <form id="loginForm">
+            <label for="loginUsername">Username:</label>
+            <input type="text" id="loginUsername" required>
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Signup</h2>
+        <div id="signupError" class="error"></div>
+        <form id="signupForm">
+            <label for="signupUsername">Username:</label>
+            <input type="text" id="signupUsername" required>
+            <label for="signupPassword">Password:</label>
+            <input type="password" id="signupPassword" required>
+            <button type="submit">Signup</button>
+        </form>
+    </div>
+
+    <script>
+        // Simulated user data
+        const users = [
+            { username: 'user1', password: 'password1' },
+            { username: 'user2', password: 'password2' },
+        ];
+
+        // Function to validate and authenticate login
+        function login(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const user = users.find(
+                (u) => u.username === username && u.password === password
+            );
+
+            if (user) {
+                document.getElementById('loginError').textContent = 'Login successful!';
+            } else {
+                document.getElementById('loginError').textContent =
+                    'Invalid username or password.';
+            }
+        }
+
+        // Function to handle signup
+        function signup(event) {
+            event.preventDefault();
+            const username = document.getElementById('signupUsername').value;
+            const password = document.getElementById('signupPassword').value;
+
+            // Check if the username is already taken
+            if (users.some((u) => u.username === username)) {
+                document.getElementById('signupError').textContent =
+                    'Username already exists.';
+            } else {
+                // Add the new user
+                users.push({ username, password });
+                document.getElementById('signupError').textContent =
+                    'Signup successful!';
+            }
+        }
+
+        // Add event listeners to the forms
+        document.getElementById('loginForm').addEventListener('submit', login);
+        document.getElementById('signupForm').addEventListener('submit', signup);
+    </script>
+</body>
+</html>
