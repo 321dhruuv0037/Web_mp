@@ -28,9 +28,31 @@ const getAllUsers = async (req, res) => {
 
 // 3. get single user
 const getOneUser = async (req, res) => {
-  let id = req.params.id;
-  let user = await User.findOne({ where: { id: id } });
-  res.status(200).send(user);
+   try {
+    const name = req.params.name;
+    const user = await User.findOne({ where: { name: name } });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Access the user's properties and send them in the response
+    const { id, email, password, department, level, createdAt, updatedAt } = user;
+
+    res.status(200).json({
+      id: id,
+      name: user.name,
+      email: email,
+      password: password,
+      department: department,
+      level: level,
+      createdAt: createdAt,
+      updatedAt: updatedAt
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 // 4. update User

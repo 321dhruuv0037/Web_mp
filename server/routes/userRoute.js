@@ -10,7 +10,7 @@ userRouter.get("/allUsers", userController.getAllUsers);
 
 userRouter.get("/getUserBookings/:id", userController.getUserBookings);
 
-userRouter.get("/:id", userController.getOneUser);
+userRouter.get("/:name", userController.getOneUser);
 
 userRouter.put("/:id", userController.updateUser);
 

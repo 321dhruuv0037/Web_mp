@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Signup Page</title>
+    <link rel="stylesheet" type="css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <div id="loginError" class="error"></div>
+        <form id="loginForm">
+            <label for="loginUsername">Username:</label>
+            <input type="text" id="loginUsername" required>
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit" id="loginButton">Login</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Signup</h2>
+        <div id="signupError" class="error"></div>
+        <form id="signupForm">
+            <label for="signupUsername">Username:</label>
+            <input type="text" id="signupUsername" required>
+            <label for="signupPassword">Password:</label>
+            <input type="password" id="signupPassword" required>
+            <button type="submit">Signup</button>
+        </form>
+    </div>
+
+    <script type="module" src="./axiosRequest.js">
+
+        import { getUserDetails } from './axiosRequest';
+        console.log('advay abcd');
+
+        document.getElementById('loginButton').addEventListener('click', () => {
+        console.log('Login button clicked');
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+        getUserDetails(username, password);
+        });
+        // const username = document.getElementById('loginUsername').value;
+        // const password = document.getElementById('loginPassword').value;
+        //
+        // const getUserDetails = async () => {
+        // try {
+        //     const response = await axios.get(`http://localhost:3000/users/${username}`); // Replace with your API URL
+        //     let userDetails = null;
+        //     const user = response.data; // Assuming your API returns user data as JSON
+        //
+        //     if (response.status === 200){
+        //         // Store the user details in variables
+        //         userDetails = {
+        //         password: user.password
+        //         };
+        //         if (password === userDetails.password){
+        //             console.log('Login successful')
+        //             document.getElementById('loginError').textContent = 'Login successful!';
+        //         } else {
+        //             document.getElementById('loginError').textContent = 'Invalid username or password.';
+        //         }
+        //     } else if(response.status === 404){
+        //         document.getElementById('loginError').textContent = 'Invalid username or password.';
+        //     };
+        //
+        // } catch (error) {
+        //         console.error(error);
+        //         }
+        // };
+        // Simulated user data
+        // const users = [
+        //     { username: 'user1', password: 'password1' },
+        //     { username: 'user2', password: 'password2' },
+        // ];
+
+        // Function to validate and authenticate login
+        // function login(event) {
+        //     event.preventDefault();
+        //     import { getUserDetails } from './axiosRequest';
+        //     getUserDetails();
+            // const username = document.getElementById('loginUsername').value;
+            // const password = document.getElementById('loginPassword').value;
+            //
+            // const user = users.find(
+            //     (u) => u.username === username && u.password === password
+            // );
+            //
+            // if (user) {
+            //     document.getElementById('loginError').textContent = 'Login successful!';
+            // } else {
+            //     document.getElementById('loginError').textContent =
+            //         'Invalid username or password.';
+            // }
+        // }
+
+        // Function to handle signup
+        // function signup(event) {
+        //     event.preventDefault();
+        //     const username = document.getElementById('signupUsername').value;
+        //     const password = document.getElementById('signupPassword').value;
+        //
+        //     // Check if the username is already taken
+        //     if (users.some((u) => u.username === username)) {
+        //         document.getElementById('signupError').textContent =
+        //             'Username already exists.';
+        //     } else {
+        //         // Add the new user
+        //         users.push({ username, password });
+        //         document.getElementById('signupError').textContent =
+        //             'Signup successful!';
+        //     }
+        // }
+        //
+        // // Add event listeners to the forms
+        // document.getElementById('loginForm').addEventListener('submit', login);
+        // document.getElementById('signupForm').addEventListener('submit', signup);
+    </script>
+</body>
+</html>
