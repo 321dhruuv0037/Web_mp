@@ -31,92 +31,46 @@
         </form>
     </div>
 
-    <script type="module" src="./axiosRequest.js">
+    <script >
+        console.log('Advay')
+        // document.addEventListener('DOMContentLoaded', () => {
+            // Add an event listener to a button or any trigger to fetch user details
+            const loginButton = document.getElementById('loginButton');
 
-        import { getUserDetails } from './axiosRequest';
-        console.log('advay abcd');
-
-        document.getElementById('loginButton').addEventListener('click', () => {
-        console.log('Login button clicked');
-        const username = document.getElementById('loginUsername').value;
-        const password = document.getElementById('loginPassword').value;
-        getUserDetails(username, password);
-        });
-        // const username = document.getElementById('loginUsername').value;
-        // const password = document.getElementById('loginPassword').value;
-        //
-        // const getUserDetails = async () => {
-        // try {
-        //     const response = await axios.get(`http://localhost:3000/users/${username}`); // Replace with your API URL
-        //     let userDetails = null;
-        //     const user = response.data; // Assuming your API returns user data as JSON
-        //
-        //     if (response.status === 200){
-        //         // Store the user details in variables
-        //         userDetails = {
-        //         password: user.password
-        //         };
-        //         if (password === userDetails.password){
-        //             console.log('Login successful')
-        //             document.getElementById('loginError').textContent = 'Login successful!';
-        //         } else {
-        //             document.getElementById('loginError').textContent = 'Invalid username or password.';
-        //         }
-        //     } else if(response.status === 404){
-        //         document.getElementById('loginError').textContent = 'Invalid username or password.';
-        //     };
-        //
-        // } catch (error) {
-        //         console.error(error);
-        //         }
-        // };
-        // Simulated user data
-        // const users = [
-        //     { username: 'user1', password: 'password1' },
-        //     { username: 'user2', password: 'password2' },
-        // ];
-
-        // Function to validate and authenticate login
-        // function login(event) {
-        //     event.preventDefault();
-        //     import { getUserDetails } from './axiosRequest';
-        //     getUserDetails();
-            // const username = document.getElementById('loginUsername').value;
-            // const password = document.getElementById('loginPassword').value;
-            //
-            // const user = users.find(
-            //     (u) => u.username === username && u.password === password
-            // );
-            //
-            // if (user) {
-            //     document.getElementById('loginError').textContent = 'Login successful!';
-            // } else {
-            //     document.getElementById('loginError').textContent =
-            //         'Invalid username or password.';
-            // }
-        // }
-
-        // Function to handle signup
-        // function signup(event) {
-        //     event.preventDefault();
-        //     const username = document.getElementById('signupUsername').value;
-        //     const password = document.getElementById('signupPassword').value;
-        //
-        //     // Check if the username is already taken
-        //     if (users.some((u) => u.username === username)) {
-        //         document.getElementById('signupError').textContent =
-        //             'Username already exists.';
-        //     } else {
-        //         // Add the new user
-        //         users.push({ username, password });
-        //         document.getElementById('signupError').textContent =
-        //             'Signup successful!';
-        //     }
-        // }
-        //
-        // // Add event listeners to the forms
-        // document.getElementById('loginForm').addEventListener('submit', login);
-        // document.getElementById('signupForm').addEventListener('submit', signup);
+            loginButton.addEventListener('click', async () => {
+                try {
+                    console.log('Advay2')
+                    // Replace 'usernameToFetch' with the actual username you want to retrieve
+                    const usernameToFetch = document.getElementById('loginUsername').value;
+                    const passwordToFetch = document.getElementById('loginPassword').value;
+                    console.log(usernameToFetch)
+                    console.log('Advay3')
+                    // if (usernameToFetch === 'advay' && passwordToFetch === 'abcd'){
+                    //     alert("Success")
+                    // }
+                    //const response = await fetch(`/users/${usernameToFetch}`);
+                    const response = await fetch(`http://localhost:3000/messages`);
+                    console.log('Advay4')
+                    if (response.status === 200) {
+                        console.log('Advay5')
+                        const user = await response.json();
+                        if (passwordToFetch === user.password){
+                            alert("Valid credentials")
+                        }
+                    } else if (response.status === 404) {
+                        console.log('Advay6')
+                        alert("User not found");
+                        // Handle the case when the user is not found
+                    } else {
+                        alert("Server error")
+                        console.error('Server error');
+                        // Handle other server errors
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        // });
     </script>
 </body>
 </html>

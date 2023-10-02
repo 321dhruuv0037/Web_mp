@@ -73,7 +73,7 @@ const deleteUser = async (req, res) => {
   res.status(200).send("User is deleted !");
 };
 
-// 6. connect one to many relation User and Bookings
+// 6. connect one-to-many relation User and Bookings
 const getUserBookings = async (req, res) => {
   const id = req.params.id;
 
@@ -89,6 +89,7 @@ const getUserBookings = async (req, res) => {
 
   res.status(200).send(data);
 };
+
 
 
 module.exports = {
