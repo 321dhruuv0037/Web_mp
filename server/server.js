@@ -14,10 +14,10 @@ app.use(express.json())
 
 app.use(express.urlencoded({ extended: true }))
 
-app.get("/messages", async (req, res) => {
+app.get("/messages/:name", async (req, res) => {
     try {
         const name = req.params.name;
-        const user = await User.findOne({where: {name: 'advay'}});
+        const user = await User.findOne({where: {name: name}});
 
         if (!user) {
             return res.status(404).json({error: "User not found"});
