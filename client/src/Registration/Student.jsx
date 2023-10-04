@@ -16,7 +16,7 @@ function Student() {
       }
 
       try {
-          const response = await fetch(`http://localhost:3000/messages/${username}`);
+          const response = await fetch(`http://localhost:3000/getOneUser/${username}`);
 
           if (response.status === 200) {
               const user = await response.json();
@@ -25,16 +25,14 @@ function Student() {
                   alert("Valid credentials");
                   // You can redirect the user or perform other actions upon successful login
               } else {
-                  setError("Invalid password");
+                  setError("Invalid username or password");
               }
           } else if (response.status === 404) {
-              setError("User not found");
+              setError("Invalid username or password");
           } else {
-              setError("Server error");
               console.error('Server error');
           }
       } catch (error) {
-          setError("An error occurred");
           console.error('An error occurred', error);
       }
   };

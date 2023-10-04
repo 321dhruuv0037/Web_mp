@@ -37,7 +37,7 @@ const getOneUser = async (req, res) => {
     }
 
     // Access the user's properties and send them in the response
-    const { id, email, password, department, level, createdAt, updatedAt } = user;
+    const { id, email, password, department, level} = user;
 
     res.status(200).json({
       id: id,
@@ -45,9 +45,7 @@ const getOneUser = async (req, res) => {
       email: email,
       password: password,
       department: department,
-      level: level,
-      createdAt: createdAt,
-      updatedAt: updatedAt
+      level: level
     });
   } catch (error) {
     console.error(error);

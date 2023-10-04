@@ -7,9 +7,34 @@ function Customer() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // You can add your login logic here and handle errors
+  const handleLogin = async (e) => {
+      e.preventDefault();
+      // You can add your login logic here and handle errors
+      if (!username || !password) {
+          setError('Please enter both username and password.');
+          return;
+      }
+
+      try {
+          const response = await fetch(`http://localhost:3000/getOneUser/${username}`);
+
+          if (response.status === 200) {
+              const user = await response.json();
+
+              if (password === user.password) {
+                  alert("Valid credentials");
+                  // You can redirect the user or perform other actions upon successful login
+              } else {
+                  setError("Invalid username or password");
+              }
+          } else if (response.status === 404) {
+              setError("Invalid username or password");
+          } else {
+              console.error('Server error');
+          }
+      } catch (error) {
+          console.error('An error occurred', error);
+      }
   };
 
   return (
