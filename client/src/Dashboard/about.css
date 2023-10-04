@@ -1,0 +1,75 @@
+.About {
+    background-color: #2b6252;
+    padding: 20px; /* Add some padding for spacing */
+  }
+  
+  /* Style for the main content container */
+  .main {
+    display: flex; /* Use flexbox to arrange content */
+    flex-wrap: wrap; /* Allow content to wrap to the next line on smaller screens */
+    align-items: center; /* Vertically center content */
+  }
+  
+/* about.css */
+
+/* Add a class to target the image */
+.About img {
+    width: 500px; /* Set the desired width */
+    height: auto; /* Maintain aspect ratio (auto-adjusts height) */
+  }
+  
+  
+  /* Style for the About-text div */
+  .About-text {
+    margin-left: 20px;
+    flex: 1; /* Allow this div to grow to fill available space */
+    color: white;
+  }
+  
+  /* Style for the heading */
+  .About-text h2 {
+    font-size: 54px; /* Adjust font size as needed */
+    padding-bottom: 60px; /* Add spacing between heading and paragraph */
+    color: white;
+  }
+  
+  /* Style for the paragraph */
+  .About-text p {
+    font-size: 26px; /* Adjust font size as needed */
+    padding-bottom: 50px; /* Add spacing between paragraphs */
+    color: white;
+  }
+  
+  /* Style for the "Download Resume" link */
+  .About-text a {
+    padding: 12px;
+    background-color: rgb(61, 32, 61);
+    color: white;
+    border: 2px solid white;
+    border-radius: 6px;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .About-text a:hover {
+    background-color: goldenrod;
+    transform: scale(1.1);
+  }
+  /* Responsive layout for smaller screens */
+  @media (max-width: 768px) {
+    .main {
+      flex-direction: column; /* Stack content vertically on smaller screens */
+      text-align: center; /* Center text on smaller screens */
+    }
+  
+    .About img {
+      margin-right: 0; /* Remove spacing on the right for the image */
+      margin-bottom: 20px; /* Add spacing between the image and text below it */
+    }
+  
+    .About-text {
+      text-align: center; /* Center text on smaller screens */
+    }
+  }
+  
