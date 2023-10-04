@@ -13,6 +13,7 @@ import Customer from './Registration/Customer';
 import Signup from './Registration/Signup';
 import Footer from './Components/Footer';
 import About from './Dashboard/About';
+import ContactUs from './Registration/contactUs';
 
 function App() {
   const location = useLocation();
@@ -48,6 +49,7 @@ function App() {
         <Route path="/football-ground" element={<Football />} />
         <Route path="/seminar-hall" element={<Seminar />} />
         <Route path="/footer" element={<Footer />} />
+        <Route path="/contactUs" element={<ContactUs />} />
         <Route path="/hr" element={<hr />} />
         {/* Add more routes as needed */}
       </Routes>

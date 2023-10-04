@@ -105,8 +105,6 @@ function Signup() {
       level: userTypeValue, // Assuming userType corresponds to "level" on the server
     };
 
-    console.log(userData)
-
     try{
       const response = await fetch(`http://localhost:3000/addUser`, {
       method: 'POST',

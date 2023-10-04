@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
 const cors = require('cors');
 
 const app = express()
@@ -46,7 +47,6 @@ app.get("/getOneUser/:name", async (req, res) => {
 app.post("/addUser", async (req, res) => {
     try{
         const {name,password,email,department,level} = req.body;
-        console.log(name)
         let info = {
             name: name,
             password: password,
@@ -64,6 +64,34 @@ app.post("/addUser", async (req, res) => {
     }
 });
 
+app.post('/sendEmail', (req, res) => {
+  const { name, email, message } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'advay2003gujar@gmail.com',
+      pass: 'cfoi dbap ijlx ujth',
+    },
+  });
+
+  const mailOptions = {
+    from: 'advay2003gujar@gmail.com',
+    to: 'advay2003gujar@gmail.com',
+    subject: 'Contact Form Submission',
+    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send('Error sending email');
+    } else {
+      console.log('Email sent: ' + info.response);
+      res.status(200).send('Email sent successfully');
+    }
+  });
+});
 
 
 // routers

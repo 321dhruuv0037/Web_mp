@@ -88,6 +88,11 @@ class Navbar extends React.Component {
                     </li>
                   </ul>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link active" aria-current="page" to="/contactUs">
+                    Contact Us
+                  </Link>
+                </li>
               </ul>
               <form className="d-flex mt-3" role="search">
                 <input
