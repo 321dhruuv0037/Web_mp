@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+  
+  body {
+    height: 100vh;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+  }
+  
+  .loginbox {
+    max-width: 400px;
+    width: 90%;
+    height: auto; /* Increase the height as needed */
+    border-radius: 25px;
+    background: rgb(252, 250, 247);
+    color: white;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 50px 30px; /* reduce the padding */
+  }
+  
+  h1 {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 32px;
+    color: rgb(94, 78, 78);
+  }
+  
+  .loginbox p {
+    margin: 10px;
+    padding: 0;
+    font-weight: bold;
+    font-size: 22px;
+    color: rgb(94, 78, 78);
+  }
+  
+  .loginbox input {
+    width: 100%;
+    margin-top: 10px; /* Reduce the margin-top */
+  }
+  
+
+  
+
+  
+/* LinkStyles.css */
+
+.custom-link {
+  margin-top: 20px;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  height: 50px;
+  background: linear-gradient(90deg, black 0%, rgb(75, 14, 154, 1) 35%, cyan 100%);
+  
+  font-size: 28px;
+  border-radius: 20px;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
+
+  
+  .custom-link:hover {
+    cursor: pointer;
+    background: #e19c13;
+    color: #000;
+  }
+  
+  /* Media Queries for Responsive Background */
+  @media (max-width: 768px) {
+    body {
+      background-size: cover;
+      background-position: top;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    body {
+      background-size: cover;
+      background-position: center;
+    }
+  }
+  
