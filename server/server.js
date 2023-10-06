@@ -18,6 +18,7 @@ app.use(express.json())
 
 app.use(express.urlencoded({ extended: true }))
 
+//USER ROUTES
 app.get("/getOneUser/:name", async (req, res) => {
     try {
         const name = req.params.name;
@@ -64,6 +65,23 @@ app.post("/addUser", async (req, res) => {
     }
 });
 
+//BOOKINGS
+app.post('/addBooking', async (req, res) => {
+    const {user_id, venue_id, level, date, start_time, status} = req.body;
+    let data = {
+        user_id: user_id,
+        venue_id: venue_id,
+        level: level,
+        date: date,
+        start_time: start_time,
+        status: status,
+    };
+
+    const booking = await Booking.create(data);
+    res.status(200).send(booking);
+});
+
+//EMAIL FOR CONTACT US
 app.post('/sendEmail', (req, res) => {
   const { name, email, message } = req.body;
 

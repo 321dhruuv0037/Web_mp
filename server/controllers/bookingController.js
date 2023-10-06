@@ -6,14 +6,14 @@ const Booking = db.bookings;
 //1. Add Booking
 const addBooking = async (req, res) => {
   const id = req.params.id;
-  const { venue_id, level, date, start_time, booking_id } = req.body;
+  const { venue_id, level, date, start_time, status } = req.body;
   let data = {
     user_id: id,
     venue_id: venue_id,
     level: level,
     date: date,
     start_time: start_time,
-    booking_id: booking_id,
+    status: status,
   };
 
   const booking = await Booking.create(data);

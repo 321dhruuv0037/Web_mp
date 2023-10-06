@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import img2 from '../assets/img2.jpg'; // Import the background image
+import { getUserVariable, setUserVariable, setVenueVariable, getVenueVariable, setLevelVariable, getLevelVariable } from '../global';
+
 
 function Football() {
   const [firstName, setFirstName] = useState('');
@@ -12,9 +14,43 @@ function Football() {
   const [paymentMethod, setPaymentMethod] = useState('');
   const [termsAgreed, setTermsAgreed] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setVenueVariable(1);
+    const dt = new Date(date)
+    const mysqlDate = dt.toISOString().slice(0, 10);
     // Handle form submission (e.g., send data to a backend API)
+    if (!firstName || !lastName || !email || !phoneNumber || !date || !time || !paymentMethod || !termsAgreed) {
+      alert("Please Enter/Select all the fields")
+      console.log('Enter all the fields')
+    } else {
+      const footballData = {
+        user_id: getUserVariable(),
+        venue_id: getVenueVariable(),
+        level: getLevelVariable(),
+        date: mysqlDate,
+        start_time: time,
+        status: 1,
+      };
+
+      try {
+        const response = await fetch(`http://localhost:3000/addBooking`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(footballData),
+        });
+
+        if (response.status === 200) {
+          alert("Booking Confirmed");
+        } else {
+          console.error('Server error');
+        }
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    }
   };
 
   const containerStyles = {
@@ -122,6 +158,7 @@ const termsContainerStyles = {
                 <input
                   type="text"
                   value={firstName}
+                  placeholder="Enter Firstname"
                   onChange={(e) => setFirstName(e.target.value)}
                   required
                   style={inputStyles}
@@ -134,6 +171,7 @@ const termsContainerStyles = {
                 <input
                   type="text"
                   value={lastName}
+                  placeholder="Enter Lastname"
                   onChange={(e) => setLastName(e.target.value)}
                   required
                   style={inputStyles}
@@ -149,6 +187,7 @@ const termsContainerStyles = {
                   <input
                     type="email"
                     value={email}
+                    placeholder="Enter email"
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     style={inputStyles}
@@ -161,6 +200,7 @@ const termsContainerStyles = {
                   <input
                     type="tel"
                     value={phoneNumber}
+                    placeholder="Enter phonenumber"
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     required
                     style={inputStyles}
@@ -182,16 +222,21 @@ const termsContainerStyles = {
                 />
               </label>
             </div>
-            <div className="time-input" style={dateInputStyles}>
+            <div className="time-input" >
               <label>
                 Time:
-                <input
-                  type="time"
+                <select
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   required
                   style={inputStyles}
-                />
+                >
+                  <option value="">Select Time Slot</option>
+                  <option value="1700">17:00 to 18:00</option>
+                  <option value="1800">18:00 to 19:00</option>
+                  <option value="1900">19:00 to 20:00</option>
+                  <option value="2000">20:00 to 21:00</option>
+                </select>
               </label>
             </div>
           </div>
