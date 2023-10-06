@@ -24,28 +24,50 @@ function Football() {
       alert("Please Enter/Select all the fields")
       console.log('Enter all the fields')
     } else {
-      const footballData = {
-        user_id: getUserVariable(),
-        venue_id: getVenueVariable(),
-        level: getLevelVariable(),
-        date: mysqlDate,
-        start_time: time,
-        status: 1,
-      };
-
       try {
-        const response = await fetch(`http://localhost:3000/addBooking`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(footballData),
+        const checkData = {
+          date: mysqlDate,
+          start_time: time,
+          venue_id: getVenueVariable(),
+        }
+
+        const response = await fetch(`http://localhost:3000/getBookingByDateTimeVenue`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(checkData),
         });
 
-        if (response.status === 200) {
-          alert("Booking Confirmed");
+        if (response.status === 200){
+          alert("Slot already full")
         } else {
-          console.error('Server error');
+          try {
+            const footballData = {
+              user_id: getUserVariable(),
+              venue_id: getVenueVariable(),
+              level: getLevelVariable(),
+              date: mysqlDate,
+              start_time: time,
+              status: 1,
+            };
+
+            const response = await fetch(`http://localhost:3000/addBooking`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(footballData),
+            });
+
+            if (response.status === 200) {
+              alert("Booking Confirmed");
+            } else {
+              console.error('Server error');
+            }
+          } catch (error) {
+            console.error('An error occurred', error);
+          }
         }
       } catch (error) {
         console.error('An error occurred', error);

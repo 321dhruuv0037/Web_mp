@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import img2 from '../assets/img3.jpg'; // Import the background image
+import img2 from '../assets/img3.jpg';
+import {getLevelVariable, getUserVariable, getVenueVariable, setVenueVariable} from "../global"; // Import the background image
 
 function Seminar() {
   const [firstName, setFirstName] = useState('');
@@ -12,9 +13,66 @@ function Seminar() {
   const [paymentMethod, setPaymentMethod] = useState('');
   const [termsAgreed, setTermsAgreed] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission (e.g., send data to a backend API)
+    setVenueVariable(3);
+    const dt = new Date(date)
+    const mysqlDate = dt.toISOString().slice(0, 10);
+    // Handle form submission (e.g., send data to a backend API)
+    if (!firstName || !lastName || !email || !phoneNumber || !date || !time || !paymentMethod || !termsAgreed) {
+      alert("Please Enter/Select all the fields")
+      console.log('Enter all the fields')
+    } else {
+      try {
+        const checkData = {
+          date: mysqlDate,
+          start_time: time,
+          venue_id: getVenueVariable(),
+        }
+
+        const response = await fetch(`http://localhost:3000/getBookingByDateTimeVenue`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(checkData),
+        });
+
+        if (response.status === 200) {
+          alert("Slot already full")
+        } else {
+          try {
+            const footballData = {
+              user_id: getUserVariable(),
+              venue_id: getVenueVariable(),
+              level: getLevelVariable(),
+              date: mysqlDate,
+              start_time: time,
+              status: 1,
+            };
+
+            const response = await fetch(`http://localhost:3000/addBooking`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(footballData),
+            });
+
+            if (response.status === 200) {
+              alert("Booking Confirmed");
+            } else {
+              console.error('Server error');
+            }
+          } catch (error) {
+            console.error('An error occurred', error);
+          }
+        }
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    }
   };
 
   const containerStyles = {
@@ -182,16 +240,21 @@ const termsContainerStyles = {
                 />
               </label>
             </div>
-            <div className="time-input" style={dateInputStyles}>
+            <div className="time-input" >
               <label>
                 Time:
-                <input
-                  type="time"
+                <select
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   required
                   style={inputStyles}
-                />
+                >
+                  <option value="">Select Time Slot</option>
+                  <option value="1700">17:00 to 18:00</option>
+                  <option value="1800">18:00 to 19:00</option>
+                  <option value="1900">19:00 to 20:00</option>
+                  <option value="2000">20:00 to 21:00</option>
+                </select>
               </label>
             </div>
           </div>

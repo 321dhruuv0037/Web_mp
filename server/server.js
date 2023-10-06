@@ -67,18 +67,38 @@ app.post("/addUser", async (req, res) => {
 
 //BOOKINGS
 app.post('/addBooking', async (req, res) => {
-    const {user_id, venue_id, level, date, start_time, status} = req.body;
-    let data = {
-        user_id: user_id,
-        venue_id: venue_id,
-        level: level,
-        date: date,
-        start_time: start_time,
-        status: status,
-    };
+    try {
+        const {user_id, venue_id, level, date, start_time, status} = req.body;
+        let data = {
+            user_id: user_id,
+            venue_id: venue_id,
+            level: level,
+            date: date,
+            start_time: start_time,
+            status: status,
+        };
 
-    const booking = await Booking.create(data);
-    res.status(200).send(booking);
+        const booking = await Booking.create(data);
+        res.status(200).send(booking);
+    } catch (error){
+        console.error(error);
+        res.status(500).json({error: "Internal server error"});
+    }
+});
+
+app.post('/getBookingByDateTimeVenue', async (req, res) => {
+    try{
+        const {date, start_time, venue_id} = req.body;
+        const booking = await Booking.findOne({ where: { date: date , start_time: start_time, venue_id: venue_id } });
+        if (booking) {
+            res.status(200).send(booking);
+        } else {
+            res.status(400).send(booking);
+        }
+    } catch (error){
+        console.error(error);
+        res.status(500).json({error: "Internal server error"});
+    }
 });
 
 //EMAIL FOR CONTACT US
