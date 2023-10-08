@@ -19,22 +19,22 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 //USER ROUTES
-app.get("/getOneUser/:name", async (req, res) => {
+app.get("/getOneUser/:email", async (req, res) => {
     try {
-        const name = req.params.name;
-        const user = await User.findOne({where: {name: name}});
+        const email = req.params.email;
+        const user = await User.findOne({where: {email: email}});
 
         if (!user) {
             return res.status(404).json({error: "User not found"});
         }
 
         // Access the user's properties and send them in the response
-        const {id, email, password, department, level} = user;
+        const {id, name, password, department, level} = user;
 
         res.status(200).json({
             id: id,
-            name: user.name,
-            email: email,
+            name: name,
+            email: user.email,
             password: password,
             department: department,
             level: level

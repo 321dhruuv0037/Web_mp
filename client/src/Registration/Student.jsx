@@ -4,39 +4,39 @@ import { Link } from 'react-router-dom';
 import { getUserVariable, setUserVariable, setLevelVariable, getLevelVariable } from '../global';
 
 function Student() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
       e.preventDefault();
       // You can add your login logic here and handle errors
-      if (!username || !password) {
+      if (!email || !password) {
           setError('Please enter both username and password.');
           return;
       }
 
       try {
-          const response = await fetch(`http://localhost:3000/getOneUser/${username}`);
+          const response = await fetch(`http://localhost:3000/getOneUser/${email}`);
 
           if (response.status === 200) {
               const user = await response.json();
 
               if (password === user.password) {
                   if (user.level === 1) {
+                      setError('');
                       alert("Valid credentials");
                       setUserVariable(user.id);
                       setLevelVariable(user.level);
-                      console.log(getUserVariable());
+                      window.location.href = '/';
                   } else {
-                      setError("Invalid username or password");
+                      setError("Invalid email or password");
                   }
-                  // You can redirect the user or perform other actions upon successful login
               } else {
-                  setError("Invalid username or password");
+                  setError("Invalid email or password");
               }
           } else if (response.status === 404) {
-              setError("Invalid username or password");
+              setError("Invalid email or password");
           } else {
               console.error('Server error');
           }
@@ -52,13 +52,13 @@ function Student() {
       <h1>Student Login</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleLogin}>
-        <p>Username</p>
+        <p>Email</p>
         <input
           type="text"
           name="username"
-          placeholder="Enter Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <p>Password</p>
         <input

@@ -1,0 +1,135 @@
+/* Reset and common styles */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Quicksand', sans-serif;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+  overflow-x: hidden; /* Remove horizontal scrollbar on smaller screens */
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Center align on all screens */
+  align-items: center; /* Center align on all screens */
+  padding: 20px;
+}
+
+.contact-box {
+  max-width: 100%; /* Use full width on smaller screens */
+  width: 100%; /* Full width on all screens */
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0px 0px 19px 5px rgba(0, 0, 0, 0.19);
+  overflow: hidden;
+  padding: 20px;
+  position: relative; /* Add relative positioning */
+}
+
+.left {
+  width: 100%; /* Full width on all screens */
+  max-height: 300px; /* Limit the height for smaller screens */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #f5f5f5; /* Add background color to the map */
+}
+
+.right {
+  padding: 20px;
+  margin-top: 300px; /* Adjust margin-top to push content below the map */
+  z-index: 1; /* Ensure details are above the map */
+}
+
+h2 {
+  position: relative;
+  padding: 0 0 10px;
+  margin-bottom: 10px;
+}
+
+h2:after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  height: 4px;
+  width: 50px;
+  border-radius: 2px;
+  background-color: #2ecc71;
+}
+
+.field {
+  width: 100%;
+  border: 2px solid rgba(0, 0, 0, 0);
+  outline: none;
+  background-color: rgba(230, 230, 230, 0.6);
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  transition: 0.3s;
+}
+
+.field:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+textarea {
+  min-height: 150px;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: #2ecc71;
+  color: #fff;
+  font-size: 1.1rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #27ae60;
+}
+
+.field:focus {
+  border: 2px solid rgba(30, 85, 250, 0.47);
+  background-color: #fff;
+}
+
+/* Media Queries for Responsiveness */
+
+/* Small screens (phones) */
+@media screen and (max-width: 480px) {
+  .container {
+    align-items: flex-start; /* Align to the top on smaller screens */
+  }
+  .contact-box {
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+  .left {
+    max-height: none; /* Remove height restriction for smaller screens */
+  }
+  .right {
+    margin-top: 10px; /* Adjust margin-top for smaller screens */
+  }
+}
+
+/* Medium screens (tablets) */
+@media screen and (min-width: 481px) and (max-width: 1024px) {
+  /* Add your specific styles for medium screens here */
+}
+
+/* Large screens (desktops) */
+@media screen and (min-width: 1025px) {
+  /* Add your specific styles for large screens here */
+}

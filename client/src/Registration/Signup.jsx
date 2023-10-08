@@ -6,7 +6,6 @@ function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [department, setDepartment] = useState('');
-  const [userType, setUserType] = useState('');
   const [error, setError] = useState('');
 
   const isPasswordValid = (password) => {
@@ -81,18 +80,21 @@ function Signup() {
     setError('');
 
     let userTypeValue = 0;
-    switch (userType) {
-      case 'Student':
+
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    const regex1 = /^3.*@dbit\.in$/;
+    const regex2 = /^101.*@dbit\.in$/;
+    if (emailRegex.test(email)) {
+      if (regex1.test(email)) {
         userTypeValue = 1;
-        break;
-      case 'Faculty':
+      } else if (regex2.test(email)) {
         userTypeValue = 2;
-        break;
-      case 'Customer':
+      } else {
         userTypeValue = 3;
-        break;
-      default:
-        userTypeValue = 0;
+      }
+    } else {
+      setError('Please enter valid email');
+      return;
     }
 
     setError('');
@@ -102,23 +104,34 @@ function Signup() {
       password,
       email,
       department: departmentValue,
-      level: userTypeValue, // Assuming userType corresponds to "level" on the server
+      level: userTypeValue,
     };
 
-    try{
-      const response = await fetch(`http://localhost:3000/addUser`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
+    try {
+      const response = await fetch(`http://localhost:3000/getOneUser/${email}`);
 
-    if (response.status === 200) {
-      window.location.href = '/Logins.jsx';
-    } else {
-      console.error('Server error');
-    }
+      if (response.status === 200) {
+        setError('User already exists');
+        return;
+      } else {
+        try {
+          const response = await fetch(`http://localhost:3000/addUser`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+          });
+
+          if (response.status === 200) {
+            window.location.href = '/logins';
+          } else {
+            console.error('Server error');
+          }
+        } catch (error) {
+          console.error('An error occurred', error);
+        }
+      }
     } catch (error) {
       console.error('An error occurred', error);
     }
@@ -138,6 +151,7 @@ function Signup() {
             placeholder="Enter Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
           <p>Email</p>
           <input
@@ -146,6 +160,7 @@ function Signup() {
             placeholder="Enter Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <p>Password</p>
           <input
@@ -154,6 +169,7 @@ function Signup() {
             placeholder="Enter Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <div className="d-flex">
             <div className="w-50 pr-2">
@@ -162,28 +178,15 @@ function Signup() {
                 name="department"
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
+                required
               >
-                <option value="">Select Department</option>
+                <option value="" disabled>Select Department</option>
                 <option value="IT">IT</option>
                 <option value="COMPS">COMPS</option>
                 <option value="EXTC">EXTC</option>
                 <option value="MECH">MECH</option>
                 <option value="NONE">NONE</option>
                 {/* Add more department options as needed */}
-              </select>
-            </div>
-            <div className="w-50 pl-2">
-              <p>User Type</p>
-              <select
-                name="userType"
-                value={userType}
-                onChange={(e) => setUserType(e.target.value)}
-              >
-                <option value="">Select User Type</option>
-                <option value="Student">Student</option>
-                <option value="Faculty">Faculty</option>
-                <option value="Customer">Customer</option>
-                {/* Add more user type options as needed */}
               </select>
             </div>
           </div>
