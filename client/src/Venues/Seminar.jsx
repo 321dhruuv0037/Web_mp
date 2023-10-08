@@ -15,11 +15,17 @@ function Seminar() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission (e.g., send data to a backend API)
     setVenueVariable(3);
+
+    //converting react date format to mysql DATE datatype format
     const dt = new Date(date)
     const mysqlDate = dt.toISOString().slice(0, 10);
-    // Handle form submission (e.g., send data to a backend API)
+
+    //checking whether the date picked is withing 10 days from current date
+    const tenDaysLater = new Date();
+    const currentDate = new Date();
+    tenDaysLater.setDate(currentDate.getDate() + 10);
+
     if (!firstName || !lastName || !email || !phoneNumber || !date || !time || !paymentMethod || !termsAgreed) {
       alert("Please Enter/Select all the fields")
       console.log('Enter all the fields')

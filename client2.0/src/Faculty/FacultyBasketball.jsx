@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import img2 from '../assets/img1.jpg'; // Import the background image
-import { getUserVariable, setUserVariable, setVenueVariable, getVenueVariable, setLevelVariable, getLevelVariable } from '../global';
 
-
-function Basketball() {
+function FacultyBasketball() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -14,75 +12,9 @@ function Basketball() {
   const [paymentMethod, setPaymentMethod] = useState('');
   const [termsAgreed, setTermsAgreed] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setVenueVariable(2);
-
-    //converting react date format to mysql DATE datatype format
-    const dt = new Date(date)
-    const mysqlDate = dt.toISOString().slice(0, 10);
-
-    //checking whether the date picked is withing 10 days from current date
-    const tenDaysLater = new Date();
-    const currentDate = new Date();
-    tenDaysLater.setDate(currentDate.getDate() + 10);
-
-    if (!firstName || !lastName || !email || !phoneNumber || !date || !time || !paymentMethod || !termsAgreed) {
-      alert("Please Enter/Select all the fields")
-      return;
-    }else if(dt <= currentDate || dt > tenDaysLater){
-      alert("Choose a date within 10 days from now")
-      return;
-    } else {
-      try {
-        const checkData = {
-          date: mysqlDate,
-          start_time: time,
-          venue_id: getVenueVariable(),
-        }
-
-        const response = await fetch(`http://localhost:3000/getBookingByDateTimeVenue`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(checkData),
-        });
-
-        if (response.status === 200) {
-          alert("Slot already full")
-        } else {
-          try {
-            const footballData = {
-              user_id: getUserVariable(),
-              venue_id: getVenueVariable(),
-              level: getLevelVariable(),
-              date: mysqlDate,
-              start_time: time,
-              status: 1,
-            };
-
-            const response = await fetch(`http://localhost:3000/addBooking`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(footballData),
-            });
-
-            if (response.status === 200) {
-              alert("Booking Confirmed");
-            } else {
-              console.error('Server error');
-            }
-          } catch (error) {
-            console.error('An error occurred', error);
-          }
-        }
-      } catch (error) {
-        console.error('An error occurred', error);
-      }
-    }
+    // Handle form submission (e.g., send data to a backend API)
   };
 
   const containerStyles = {
@@ -250,21 +182,16 @@ const termsContainerStyles = {
                 />
               </label>
             </div>
-            <div className="time-input" >
+            <div className="time-input" style={dateInputStyles}>
               <label>
                 Time:
-                <select
+                <input
+                  type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   required
                   style={inputStyles}
-                >
-                  <option value="">Select Time Slot</option>
-                  <option value="1700">17:00 to 18:00</option>
-                  <option value="1800">18:00 to 19:00</option>
-                  <option value="1900">19:00 to 20:00</option>
-                  <option value="2000">20:00 to 21:00</option>
-                </select>
+                />
               </label>
             </div>
           </div>
@@ -302,4 +229,4 @@ const termsContainerStyles = {
   );
 }
 
-export default Basketball;
+export default FacultyBasketball;

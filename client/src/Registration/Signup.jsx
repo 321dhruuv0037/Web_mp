@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../Registration/Signup.css'; // Create this CSS file for styling
+//import bcrypt from 'bcrypt';
+
 
 function Signup() {
   const [name, setName] = useState('');
@@ -39,73 +41,149 @@ function Signup() {
       return false;
     }
 
-    // Check if the password contains the user's name (case insensitive)
-    if (name && password.toLowerCase().includes(name.toLowerCase())) {
-      setError('Password cannot contain your name.');
-      return false;
+    // Check if the password contains the user's name (case-insensitive)
+    const nameParts = name.toLowerCase().split(' ');
+    const passwordLower = password.toLowerCase();
+
+    // Check all permutations of name parts
+    for (let i = 0; i < nameParts.length; i++) {
+      for (let j = 0; j < nameParts.length; j++) {
+        if (i !== j) {
+          const permutation = nameParts[i] + nameParts[j];
+
+          // Check if the permutation exists in the password
+          if (passwordLower.includes(permutation)) {
+            setError('Password cannot contain your name');
+            return false;
+          }
+        }
+      }
+    }
+
+    // Check if any individual name part exists in the password
+    for (const namePart of nameParts) {
+      if (passwordLower.includes(namePart)) {
+        setError('Password cannot contain your name');
+        return false;
+      }
     }
 
     setError(''); // Clear any previous error messages
     return true;
   };
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    // You can add your login logic here and handle errors
-    if (!isPasswordValid(password)) {
-      return;
-    }
+  let userTypeValue = 0;// user level value for database
+  let departmentValue = 0;// user department
 
-    let departmentValue = 0;
-    switch (department) {
-      case 'IT':
-        departmentValue = 1;
-        break;
-      case 'COMPS':
-        departmentValue = 2;
-        break;
-      case 'EXTC':
-        departmentValue = 3;
-        break;
-      case 'MECH':
-        departmentValue = 4;
-        break;
-      case 'NONE':
-        departmentValue = 5;
-        break;
-      default:
-        departmentValue = 0;
-    }
+  const isEmailValid = (email) => {
 
-    setError('');
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/; // checking email format
+    const studentRegex = /^3.*@dbit\.in$/; //checking for student email
+    const teachingStaffRegex = /^101.*@dbit\.in$/; //checking for teacher's email
+    const fatherRegex = /^102.*@dbit\.in$/; //checking for father's email
+    const nonTeachingStaffRegex = /^103.*@dbit\.in$/; //checking for non teaching staff email
 
-    let userTypeValue = 0;
-
-    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    const regex1 = /^3.*@dbit\.in$/;
-    const regex2 = /^101.*@dbit\.in$/;
     if (emailRegex.test(email)) {
-      if (regex1.test(email)) {
+
+      if (studentRegex.test(email)) {
         userTypeValue = 1;
-      } else if (regex2.test(email)) {
+      } else if (teachingStaffRegex.test(email)) {
+        userTypeValue = 3;
+      } else if (fatherRegex.test(email)) {
+        userTypeValue = 4;
+      } else if (nonTeachingStaffRegex.test(email)) {
         userTypeValue = 2;
       } else {
-        userTypeValue = 3;
+        userTypeValue = 0; //default user/customer
       }
+
     } else {
       setError('Please enter valid email');
       return;
     }
 
-    setError('');
+    setError(''); // Clear any previous error messages
+    return true;
+  };
 
-    const userData = {
-      name,
-      password,
-      email,
-      department: departmentValue,
-      level: userTypeValue,
-    };
+
+
+  const setDepartmentValue = (department) => {
+
+    if (userTypeValue === 1) {
+      switch (department) {
+        case 'IT':
+          departmentValue = 11;
+          return true;
+        case 'COMPS':
+          departmentValue = 12;
+          return true;
+        case 'EXTC':
+          departmentValue = 13;
+          return true;
+        case 'MECH':
+          departmentValue = 14;
+          return true;
+        default:
+          setError('Email does not match with the Department chosen');
+          return false;
+      }
+    } else if(userTypeValue === 3){
+      switch (department) {
+        case 'IT':
+          departmentValue = 21;
+          return true;
+        case 'COMPS':
+          departmentValue = 22;
+          return true;
+        case 'EXTC':
+          departmentValue = 23;
+          return true;
+        case 'MECH':
+          departmentValue = 24;
+          return true;
+        default:
+          setError('Email does not match with the Department chosen');
+          return false;
+      }
+    } else if(userTypeValue === 4){
+      if (department === 'FATHER'){
+        departmentValue = 40;
+        return true;
+      } else {
+        setError('Email does not match with the Department chosen');
+        return;
+      }
+    } else if(userTypeValue === 5){
+      if (department === 'NONT'){
+        departmentValue = 40;
+        return true;
+      } else {
+        setError('Email does not match with the Department chosen');
+        return false;
+      }
+    }
+
+    setError('');
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    //password validation
+    if (!isPasswordValid(password)) {
+      return;
+    }
+
+    //email validation
+    if(!isEmailValid(email)) {
+      return;
+    }
+
+    //setting department value
+    if(!setDepartmentValue(department)){
+      return;
+    }
 
     try {
       const response = await fetch(`http://localhost:3000/getOneUser/${email}`);
@@ -115,6 +193,14 @@ function Signup() {
         return;
       } else {
         try {
+          const userData = {
+            name,
+            password,
+            email,
+            department: departmentValue,
+            level: userTypeValue,
+          };
+
           const response = await fetch(`http://localhost:3000/addUser`, {
             method: 'POST',
             headers: {
@@ -185,7 +271,8 @@ function Signup() {
                 <option value="COMPS">COMPS</option>
                 <option value="EXTC">EXTC</option>
                 <option value="MECH">MECH</option>
-                <option value="NONE">NONE</option>
+                <option value="FATHER">FATHER</option>
+                <option value="NONT">MANAGEMENT</option>
                 {/* Add more department options as needed */}
               </select>
             </div>

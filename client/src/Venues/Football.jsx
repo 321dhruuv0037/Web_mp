@@ -17,14 +17,24 @@ function Football() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setVenueVariable(1);
+
+    //converting react date format to mysql DATE datatype format
     const dt = new Date(date)
     const mysqlDate = dt.toISOString().slice(0, 10);
-    // Handle form submission (e.g., send data to a backend API)
+
+    //checking whether the date picked is withing 10 days from current date
+    const currentDate = new Date();
+    const tenDaysLater = new Date();
+    tenDaysLater.setDate(currentDate.getDate() + 10);
+
     if (!firstName || !lastName || !email || !phoneNumber || !date || !time || !paymentMethod || !termsAgreed) {
       alert("Please Enter/Select all the fields")
-      console.log('Enter all the fields')
+      return;
+    } else if(dt <= currentDate || dt > tenDaysLater){
+      alert("Choose a date 10 days from now")
+      return;
     } else {
-      try {
+      try{
         const checkData = {
           date: mysqlDate,
           start_time: time,

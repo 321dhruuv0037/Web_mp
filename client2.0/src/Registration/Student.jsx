@@ -1,16 +1,33 @@
 import React, { useState } from 'react';
 import '../Registration/Login.css'; // Create this CSS file for styling
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
 
 function Student() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const navigate = useNavigate();
+
   const handleLogin = (e) => {
     e.preventDefault();
-    // You can add your login logic here and handle errors
+    
+    // Add your login logic here and handle errors
+    // Assuming login is successful, you can redirect to the dashboard page
+    if (username === 'aryaan2903' && password === '1234') {
+      // Replace 'yourUsername' and 'yourPassword' with your actual validation logic
+      // Redirect to the dashboard page
+      navigate('/student-dashboard');
+    } else {
+      // Handle login errors and set the error state if necessary
+      setError('Invalid username or password');
+    }
   };
+  
+  
 
   return (
     <div className='login'>
