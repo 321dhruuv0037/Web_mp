@@ -23,19 +23,22 @@ function Faculty() {
               const user = await response.json();
 
               if (password === user.password) {
-                  if (user.level === 2) {
+                  if (user.level === 2||user.level === 3||user.level === 4) {
                       alert("Valid credentials");
                       setUserVariable(user.id);
                       setLevelVariable(user.level);
                       console.log(getUserVariable());
                   } else {
+                      console.log('Error1');
                       setError("Invalid username or password");
                   }
                   // You can redirect the user or perform other actions upon successful login
               } else {
+                  console.log('Error2');
                   setError("Invalid username or password");
               }
           } else if (response.status === 404) {
+              console.log('Error3');
               setError("Invalid username or password");
           } else {
               console.error('Server error');

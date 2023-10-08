@@ -131,16 +131,16 @@ function Signup() {
     } else if(userTypeValue === 3){
       switch (department) {
         case 'IT':
-          departmentValue = 21;
+          departmentValue = 31;
           return true;
         case 'COMPS':
-          departmentValue = 22;
+          departmentValue = 32;
           return true;
         case 'EXTC':
-          departmentValue = 23;
+          departmentValue = 33;
           return true;
         case 'MECH':
-          departmentValue = 24;
+          departmentValue = 34;
           return true;
         default:
           setError('Email does not match with the Department chosen');
@@ -154,9 +154,9 @@ function Signup() {
         setError('Email does not match with the Department chosen');
         return;
       }
-    } else if(userTypeValue === 5){
+    } else if(userTypeValue === 2){
       if (department === 'NONT'){
-        departmentValue = 40;
+        departmentValue = 20;
         return true;
       } else {
         setError('Email does not match with the Department chosen');

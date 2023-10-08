@@ -40,7 +40,7 @@ function Football() {
           start_time: time,
           venue_id: getVenueVariable(),
         }
-
+        console.log('Working1');
         const response = await fetch(`http://localhost:3000/getBookingByDateTimeVenue`, {
             method: 'POST',
             headers: {
@@ -48,10 +48,63 @@ function Football() {
             },
             body: JSON.stringify(checkData),
         });
-
+        console.log('Working2');
+        const booking = await response.json();
+        console.log('Working3');
         if (response.status === 200){
-          alert("Slot already full")
+          if (booking.level >= getLevelVariable()){
+            alert("Slot already full")
+          } else {
+            console.log('Working4');
+            try {
+            const footballData = {
+              user_id: getUserVariable(),
+              venue_id: getVenueVariable(),
+              level: getLevelVariable(),
+              date: mysqlDate,
+              start_time: time,
+              status: 1,
+            };
+
+            fetch(`http://localhost:3000/deleteBooking`, {
+              method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(checkData),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  alert('Booking deleted successfully');
+                  console.log('Booking deleted successfully');
+                } else {
+                  alert('Failed to delete booking');
+                  console.error('Failed to delete booking');
+                }
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+
+            const response = await fetch(`http://localhost:3000/addBooking`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(footballData),
+            });
+
+            if (response.status === 200) {
+              alert("Booking Confirmed");
+            } else {
+              console.error('Server error');
+            }
+          } catch (error) {
+            console.error('An error occurred', error);
+          }
+          }
         } else {
+          console.log('Working5');
           try {
             const footballData = {
               user_id: getUserVariable(),
@@ -61,6 +114,7 @@ function Football() {
               start_time: time,
               status: 1,
             };
+
 
             const response = await fetch(`http://localhost:3000/addBooking`, {
               method: 'POST',

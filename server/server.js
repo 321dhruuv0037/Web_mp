@@ -37,7 +37,7 @@ app.get("/getOneUser/:email", async (req, res) => {
             email: user.email,
             password: password,
             department: department,
-            level: level
+            level: level,
         });
     } catch (error) {
         console.error(error);
@@ -86,15 +86,42 @@ app.post('/addBooking', async (req, res) => {
     }
 });
 
+app.delete('/deleteBooking', async (req, res) => {
+    try {
+        const {date, start_time, venue_id} = req.body;
+        const booking = await Booking.findOne({ where: { date: date , start_time: start_time, venue_id: venue_id } });
+
+        booking.status = 0;
+        await booking.save();
+
+        res.status(200).json({ message: 'Booking deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 app.post('/getBookingByDateTimeVenue', async (req, res) => {
     try{
         const {date, start_time, venue_id} = req.body;
         const booking = await Booking.findOne({ where: { date: date , start_time: start_time, venue_id: venue_id } });
-        if (booking) {
-            res.status(200).send(booking);
-        } else {
-            res.status(400).send(booking);
+
+        if (!booking) {
+            return res.status(400).json({ error: "Booking not found" });
         }
+
+        const { id, user_id, level, status } = booking;
+
+        res.status(200).json({
+            id: id,
+            user_id: user_id,
+            venue_id: booking.venue_id,
+            level: level,
+            date: booking.date,
+            start_time: booking.start_time,
+            status: status,
+        });
     } catch (error){
         console.error(error);
         res.status(500).json({error: "Internal server error"});
