@@ -14,7 +14,7 @@
 
 /* Add a class to target the image */
 .About img {
-    width: 500px; /* Set the desired width */
+    width: 450px; /* Set the desired width */
     height: auto; /* Maintain aspect ratio (auto-adjusts height) */
   }
   

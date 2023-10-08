@@ -3,12 +3,14 @@ import FacultyCards from './FacultyCards';
 import { Link } from 'react-router-dom';
 import img3 from "../assets/img3.jpg"
 import img5 from "../assets/img5.jpg"
-
+import FacultyNavbar from "./FacultyNavbar";
 
 class FacultyHalls extends Component {
     render() {
         return (
-            <div className="container-fluid d-flex justify-content-center">
+            <div>
+                <FacultyNavbar />
+                <div className="container-fluid d-flex justify-content-center">
                 <div className="row">
                     <div className="col-md-6">
                         <FacultyCards imgsrc={img3} title="Seminar Hall">
@@ -27,6 +29,8 @@ class FacultyHalls extends Component {
 
                 </div>
             </div>
+            </div>
+            
         );
     }
 }

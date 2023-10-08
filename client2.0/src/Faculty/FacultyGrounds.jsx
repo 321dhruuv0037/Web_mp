@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom';
 import img1 from "../assets/img1.jpg"
 import img2 from "../assets/img2.jpg"
 import img4 from "../assets/img4.jpg"
+import FacultyNavbar from "./FacultyNavbar";
 
 class FacultyGrounds extends Component {
     render() {
         return (
-            <div className="container-fluid d-flex justify-content-center">
+            <div>
+                <FacultyNavbar/>
+                <div className="container-fluid d-flex justify-content-center">
                 <div className="row">
                     <div className="col-md-4">
                         <FacultyCards imgsrc={img1} title="Basketball Court">
@@ -33,6 +36,8 @@ class FacultyGrounds extends Component {
                     </div>
                 </div>
             </div>
+            </div>
+            
         );
     }
 }

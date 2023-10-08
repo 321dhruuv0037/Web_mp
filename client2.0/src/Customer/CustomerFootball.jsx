@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import img2 from '../assets/img2.jpg'; // Import the background image
+import BookingConfirmation from '../Components/BookingConfirmation';
 
 function CustomerFootball() {
   const [firstName, setFirstName] = useState('');
@@ -16,6 +17,19 @@ function CustomerFootball() {
     e.preventDefault();
     // Handle form submission (e.g., send data to a backend API)
   };
+
+     // Create a state variable for the modal
+     const [modalIsOpen, setModalIsOpen] = useState(false);
+
+     // Function to open the modal
+     const openModal = () => {
+       setModalIsOpen(true);
+     };
+   
+     // Function to close the modal
+     const closeModal = () => {
+       setModalIsOpen(false);
+     };
 
   const containerStyles = {
     maxWidth: '800px', // Increased form width
@@ -184,7 +198,19 @@ const termsContainerStyles = {
             </div>
             <div className="time-input" style={dateInputStyles}>
               <label>
-                Time:
+                Start Time:
+                <input
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  required
+                  style={inputStyles}
+                />
+              </label>
+            </div>
+            <div className="time-input" style={dateInputStyles}>
+              <label>
+                End Time:
                 <input
                   type="time"
                   value={time}
@@ -222,7 +248,10 @@ const termsContainerStyles = {
             I agree to the terms and conditions
           </label>
           </div>
-          <button type="submit" style={submitButtonStyles}>Book Ground</button>
+          <button type="submit" style={submitButtonStyles} onClick={openModal}>
+          Book Court
+        </button>
+        <BookingConfirmation isOpen={modalIsOpen} onClose={closeModal} />
         </form>
       </div>
     </div>
