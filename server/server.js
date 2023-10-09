@@ -68,13 +68,14 @@ app.post("/addUser", async (req, res) => {
 //BOOKINGS
 app.post('/addBooking', async (req, res) => {
     try {
-        const {user_id, venue_id, level, date, start_time, status} = req.body;
+        const {user_id, venue_id, level, date, start_time,end_time, status} = req.body;
         let data = {
             user_id: user_id,
             venue_id: venue_id,
             level: level,
             date: date,
             start_time: start_time,
+            end_time: end_time,
             status: status,
         };
 

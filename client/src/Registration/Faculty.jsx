@@ -23,7 +23,7 @@ function Faculty() {
               const user = await response.json();
 
               if (password === user.password) {
-                  if (user.level === 2||user.level === 3||user.level === 4) {
+                  if (user.level != 1) {
                       alert("Valid credentials");
                       setUserVariable(user.id);
                       setLevelVariable(user.level);

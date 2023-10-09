@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './Login.css'; // Create this CSS file for styling
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getUserVariable, setUserVariable, setLevelVariable, getLevelVariable } from '../global';
 
 function Student() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const history = useNavigate();
 
   const handleLogin = async (e) => {
       e.preventDefault();
@@ -25,10 +27,12 @@ function Student() {
               if (password === user.password) {
                   if (user.level === 1) {
                       setError('');
-                      alert("Valid credentials");
                       setUserVariable(user.id);
                       setLevelVariable(user.level);
-                      window.location.href = '/';
+                      alert("Valid credentials");
+                      history('/');
+                      // eslint-disable-next-line no-restricted-globals
+                      history.pushState(null, null, '/');
                   } else {
                       setError("Invalid email or password");
                   }

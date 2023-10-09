@@ -8,7 +8,6 @@ function Football() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
@@ -63,6 +62,7 @@ function Football() {
               level: getLevelVariable(),
               date: mysqlDate,
               start_time: time,
+              end_time: 1900,
               status: 1,
             };
 
@@ -112,6 +112,7 @@ function Football() {
               level: getLevelVariable(),
               date: mysqlDate,
               start_time: time,
+              end_time: 1900,
               status: 1,
             };
 
