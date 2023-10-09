@@ -10,10 +10,9 @@ function CancellationModal({ booking, onCancel, onClose }) {
       </Modal.Header>
       <Modal.Body>
         <h2>Cancellation Details</h2>
-        <p>Name: {booking.name}</p>
         <p>Venue: {booking.venue}</p>
-        <p>Start Time: {booking.startTime}</p>
-        <p>End Time: {booking.endTime}</p>
+        <p>Start Time: {booking.start_time}</p>
+        <p>End Time: {booking.end_time}</p>
 
       </Modal.Body>
       <Modal.Footer>

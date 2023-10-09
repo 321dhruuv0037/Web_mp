@@ -87,6 +87,21 @@ app.post('/addBooking', async (req, res) => {
     }
 });
 
+app.delete('/deleteBooking/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const booking = await Booking.findOne({ where: { id: id } });
+
+        booking.status = 0;
+        await booking.save();
+
+        res.status(200).json({ message: 'Booking deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.delete('/deleteBooking', async (req, res) => {
     try {
         const {date, start_time, venue_id} = req.body;
@@ -102,6 +117,32 @@ app.delete('/deleteBooking', async (req, res) => {
     }
 });
 
+app.get('/getAllBooking/:user_id', async (req, res) => {
+    try {
+        const user_id = req.params.user_id;
+        const bookings = await Booking.findAll({ where: { user_id: user_id } });
+
+        if (bookings.length === 0) {
+            return res.status(400).json({ error: "No bookings found" });
+        }
+
+        const bookingList = bookings.map((booking) => {
+            return {
+                id: booking.id,
+                venue_id: booking.venue_id,
+                date: booking.date,
+                start_time: booking.start_time,
+                end_time: booking.end_time,
+                status: booking.status,
+            };
+        });
+
+        res.status(200).json(bookingList);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 app.post('/getBookingByDateTimeVenue', async (req, res) => {
     try{
@@ -112,7 +153,7 @@ app.post('/getBookingByDateTimeVenue', async (req, res) => {
             return res.status(400).json({ error: "Booking not found" });
         }
 
-        const { id, user_id, level, status } = booking;
+        const { id, user_id, level,end_time, status } = booking;
 
         res.status(200).json({
             id: id,
@@ -121,6 +162,7 @@ app.post('/getBookingByDateTimeVenue', async (req, res) => {
             level: level,
             date: booking.date,
             start_time: booking.start_time,
+            end_time: end_time,
             status: status,
         });
     } catch (error){

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import img2 from '../assets/img2.jpg'; // Import the background image
-import { getUserVariable, setUserVariable, setVenueVariable, getVenueVariable, setLevelVariable, getLevelVariable } from '../global';
+import { getUserVariable,
+        setUserVariable,
+        setVenueVariable,
+        getVenueVariable,
+        setLevelVariable,
+        getLevelVariable } from '../global';
 
 
 function Football() {
@@ -66,7 +71,7 @@ function Football() {
               status: 1,
             };
 
-            fetch(`http://localhost:3000/deleteBooking`, {
+            fetch(`http://localhost:3000/deleteBooking/:${booking.id}`, {
               method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',

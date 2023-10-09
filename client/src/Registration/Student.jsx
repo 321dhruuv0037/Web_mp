@@ -30,8 +30,6 @@ function Student() {
                       setUserVariable(user.id);
                       setLevelVariable(user.level);
                       alert("Valid credentials");
-                      history('/');
-                      // eslint-disable-next-line no-restricted-globals
                       history.pushState(null, null, '/');
                   } else {
                       setError("Invalid email or password");

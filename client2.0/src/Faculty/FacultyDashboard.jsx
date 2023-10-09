@@ -73,7 +73,7 @@ function FacultyDashboard() {
             </div>
           </div>
           <hr />
-          {/* Include the FacultyTable component within the JSX */}
+          {/* Include the StudentTable component within the JSX */}
           <FacultyTable />
         </div>
       </section>

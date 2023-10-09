@@ -1,21 +1,140 @@
 import React, { useState } from 'react';
 import img4 from '../assets/img4.jpg'; // Import the background image
 import BookingConfirmation from '../Components/BookingConfirmation';
+import { getUserVariable,
+        setUserVariable,
+        setVenueVariable,
+        getVenueVariable,
+        setLevelVariable,
+        getLevelVariable } from '../global';
 
 function StudentTop() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [termsAgreed, setTermsAgreed] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission (e.g., send data to a backend API)
+    setVenueVariable(3);
+    const selectedOption = JSON.parse(time);
+
+    //converting react date format to mysql DATE datatype format
+    const dt = new Date(date)
+    const mysqlDate = dt.toISOString().slice(0, 10);
+
+    //checking whether the date picked is withing 10 days from current date
+    const currentDate = new Date();
+    const tenDaysLater = new Date();
+    tenDaysLater.setDate(currentDate.getDate() + 10);
+
+    if(dt <= currentDate || dt > tenDaysLater){
+      alert("Choose a date 10 days from now")
+      return;
+    } else {
+      try{
+        const checkData = {
+          date: mysqlDate,
+          start_time: selectedOption.start,
+          venue_id: getVenueVariable(),
+        }
+        console.log('Working1');
+        const response = await fetch(`http://localhost:3000/getBookingByDateTimeVenue`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(checkData),
+        });
+        console.log('Working2');
+        const booking = await response.json();
+        console.log('Working3');
+        if (response.status === 200){
+          if (booking.level >= getLevelVariable()){
+            alert("Slot already full")
+          } else {
+            console.log('Working4');
+            try {
+            const footballData = {
+              user_id: getUserVariable(),
+              venue_id: getVenueVariable(),
+              level: getLevelVariable(),
+              date: mysqlDate,
+              start_time: selectedOption.start,
+              end_time: selectedOption.end,
+              status: 1,
+            };
+
+            fetch(`http://localhost:3000/deleteBooking`, {
+              method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(checkData),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  alert('Booking deleted successfully');
+                  console.log('Booking deleted successfully');
+                } else {
+                  alert('Failed to delete booking');
+                  console.error('Failed to delete booking');
+                }
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+
+            const response = await fetch(`http://localhost:3000/addBooking`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(footballData),
+            });
+
+            if (response.status === 200) {
+              alert("Booking Confirmed");
+            } else {
+              console.error('Server error');
+            }
+          } catch (error) {
+            console.error('An error occurred', error);
+          }
+          }
+        } else {
+          console.log('Working5');
+          try {
+            const footballData = {
+              user_id: getUserVariable(),
+              venue_id: getVenueVariable(),
+              level: getLevelVariable(),
+              date: mysqlDate,
+              start_time: selectedOption.start,
+              end_time: selectedOption.end,
+              status: 1,
+            };
+
+
+            const response = await fetch(`http://localhost:3000/addBooking`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(footballData),
+            });
+
+            if (response.status === 200) {
+              alert("Booking Confirmed");
+            } else {
+              console.error('Server error');
+            }
+          } catch (error) {
+            console.error('An error occurred', error);
+          }
+        }
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    }
   };
 
      // Create a state variable for the modal
@@ -129,60 +248,6 @@ const termsContainerStyles = {
       <div className="football-container" style={containerStyles}>
         <h2>Book Top Court</h2>
         <form onSubmit={handleSubmit}>
-          <div className="name-container" style={nameEmailContainerStyles}>
-            <div className="name-input" style={nameInputStyles}>
-              <label>
-                First Name:
-                <input
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
-                  style={inputStyles}
-                />
-              </label>
-            </div>
-            <div className="name-input" style={nameInputStyles}>
-              <label>
-                Last Name:
-                <input
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  required
-                  style={inputStyles}
-                />
-              </label>
-            </div>
-          </div>
-          <div className="email-phone-container" style={nameEmailContainerStyles}>
-            <div className="email-phone-input" style={nameEmailContainerStyles}>
-              <div className="email-input" style={inputStyles}>
-                <label>
-                  Email Address:
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={inputStyles}
-                  />
-                </label>
-              </div>
-              <div className="phone-input" style={inputStyles}>
-                <label>
-                  Phone Number:
-                  <input
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    required
-                    style={inputStyles}
-                  />
-                </label>
-                </div>
-            </div>
-          </div>
           <div className="date-time-container" style={dateTimeContainerStyles}>
             <div className="date-input" style={dateInputStyles}>
               <label>
@@ -199,42 +264,21 @@ const termsContainerStyles = {
             <div className="time-input" style={dateInputStyles}>
               <label>
                 Time:
-                <input
-                  type="time"
+                <select
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   required
                   style={inputStyles}
-                />
+                >
+                  <option value="" disabled>Select Time Slot</option>
+                  <option value='{"start": "1330", "end": "1345"}'>13:30 to 14:00</option>
+                  <option value='{"start": "1345", "end": "1400"}'>16:00 to 16:30</option>
+                  <option value='{"start": "1345", "end": "1400"}'>16:30 to 17:00</option>
+                  <option value='{"start": "1345", "end": "1400"}'>17:00 to 17:30</option>
+                  <option value='{"start": "1345", "end": "1400"}'>17:30 to 18:00</option>
+                </select>
               </label>
             </div>
-          </div>
-          <div className="payment-container">
-          <label>
-            Payment Method:
-            <select
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              required
-              style={inputStyles}
-            >
-              <option value="">Select Payment Method</option>
-              <option value="creditCard">Credit Card</option>
-              <option value="cash">Cash</option>
-              <option value="onlinePayment">Online Payment</option>
-            </select>
-          </label>
-          </div>
-          <div className="terms-container" style={termsContainerStyles}>
-          <label>
-            <input
-              type="checkbox"
-              checked={termsAgreed}
-              onChange={() => setTermsAgreed(!termsAgreed)}
-              required
-            />{' '}
-            I agree to the terms and conditions
-          </label>
           </div>
           <button type="submit" style={submitButtonStyles} onClick={openModal}>
           Book Court
