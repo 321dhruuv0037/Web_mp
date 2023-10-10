@@ -324,7 +324,7 @@ const termsContainerStyles = {
                   style={inputStyles}
                 >
                   <option value="" disabled>Select Time Slot</option>
-                  <option value="1700">17:00 to 18:00</option>
+                  <option value="1700-1800">17:00 to 18:00</option>
                   <option value="1800">18:00 to 19:00</option>
                   <option value="1900">19:00 to 20:00</option>
                   <option value="2000">20:00 to 21:00</option>

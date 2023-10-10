@@ -114,12 +114,11 @@ function FacultyBasketball() {
                                 status: 1,
                             };
 
-                            fetch(`http://localhost:3000/deleteBooking`, {
+                            fetch(`http://localhost:3000/deleteBooking/${booking.id}`, {
                                 method: 'DELETE',
                                 headers: {
                                     'Content-Type': 'application/json',
                                 },
-                                body: JSON.stringify(checkData),
                             })
                                 .then(async (response) => {
                                     if (response.ok) {
@@ -364,7 +363,7 @@ function FacultyBasketball() {
     return (
         <div style={backgroundStyles}>
             <div className="football-container" style={containerStyles}>
-                <h2>Book Football Ground</h2>
+                <h2>Book Basketball Ground</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="date-time-container" style={dateTimeContainerStyles}>
                         <div className="date-input" style={dateInputStyles}>

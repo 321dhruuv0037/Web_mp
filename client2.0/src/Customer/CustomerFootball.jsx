@@ -74,10 +74,10 @@ function CustomerFootball() {
         //checking whether the date picked is withing 10 days from current date
         const currentDate = new Date();
         const tenDaysLater = new Date();
-        tenDaysLater.setDate(currentDate.getDate() + 62);
+        tenDaysLater.setDate(currentDate.getDate() + 92);
 
         if (dt <= currentDate || dt > tenDaysLater) {
-            alert("Choose a date within two months from now")
+            alert("Choose a date within three months from now")
             return;
         } else {
             try {
@@ -99,110 +99,7 @@ function CustomerFootball() {
                 const booking = await response.json();
                 console.log('Working3');
                 if (response.status === 200) {
-                    if (booking.level >= getLevelVariable()) {
                         alert("Slot already full")
-                    } else {
-                        console.log('Working4');
-                        try {
-                            const footballData = {
-                                user_id: getUserVariable(),
-                                venue_id: getVenueVariable(),
-                                level: getLevelVariable(),
-                                date: mysqlDate,
-                                start_time: start(startTime),
-                                end_time: end(endTime),
-                                status: 1,
-                            };
-
-                            fetch(`http://localhost:3000/deleteBooking`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(checkData),
-                            })
-                                .then(async (response) => {
-                                    if (response.ok) {
-                                        const response = await fetch(`http://localhost:3000/getUser/${booking.user_id}`);
-
-                                        const user = await response.json();
-
-                                        const mailData = {
-                                            name: user.name,
-                                            email: user.email,
-                                            message: `${user.name} your booked slot for Basketball Court on ${booking.date} from ${booking.start_time} to ${booking.end_time} has been canceled due to booking by a higher authority.`,
-                                        };
-
-                                        try {
-                                            const response = await fetch(`http://localhost:3000/bookingEmail`, {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                },
-                                                body: JSON.stringify(mailData),
-                                            });
-
-                                            if (response.status === 200) {
-                                                console.log('Done');
-                                            } else {
-                                                console.error('Server error');
-                                            }
-                                        } catch (error) {
-                                            console.error('An error occurred', error);
-                                        }
-                                        console.log('Booking deleted successfully');
-                                    } else {
-                                        alert('Failed to delete booking');
-                                        console.error('Failed to delete booking');
-                                        return;
-                                    }
-                                })
-                                .catch((error) => {
-                                    console.error('Error:', error);
-                                });
-
-                            const response = await fetch(`http://localhost:3000/addBooking`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(footballData),
-                            });
-
-                            if (response.status === 200) {
-
-                                const mailData = {
-                                    name: getNameVariable(),
-                                    email: getEmailVariable(),
-                                    message: `${getNameVariable()} you have booked the Basketball Court on ${date} from ${startTime} to ${endTime}`,
-                                };
-
-                                try {
-                                    const response = await fetch(`http://localhost:3000/bookingEmail`, {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                        },
-                                        body: JSON.stringify(mailData),
-                                    });
-
-                                    if (response.status === 200) {
-                                        console.log('Done');
-                                    } else {
-                                        console.error('Server error');
-                                    }
-                                } catch (error) {
-                                    console.error('An error occurred', error);
-                                }
-
-                                openModal(true);
-                            } else {
-                                console.error('Server error');
-                            }
-                        } catch (error) {
-                            console.error('An error occurred', error);
-                        }
-                    }
                 } else {
                     console.log('Working5');
                     try {
@@ -229,7 +126,7 @@ function CustomerFootball() {
                             const mailData = {
                                 name: getNameVariable(),
                                 email: getEmailVariable(),
-                                message: `${getNameVariable()} you have booked the Basketball Court on ${date} from ${startTime} to ${endTime}`,
+                                message: `${getNameVariable()} you have booked the Football Ground on ${date} from ${startTime} to ${endTime}`,
                             };
 
                             try {

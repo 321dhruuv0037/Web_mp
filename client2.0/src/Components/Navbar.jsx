@@ -52,7 +52,7 @@ class Navbar extends React.Component {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" to="/landing">
+                  <Link className="nav-link active" aria-current="page" to="/logins">
                     Login <FaUser />
                   </Link>
                 </li>
@@ -112,7 +112,7 @@ class Navbar extends React.Component {
 
             </div>
           </div>
-          <Link to="/landing" className="user-icon">
+          <Link to="/logins" className="user-icon">
             <FaUser />
           </Link>
         </div>

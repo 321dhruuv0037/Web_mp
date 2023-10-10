@@ -16,6 +16,7 @@ const venueMapping = {
 const statusMapping = {
   1: 'Active',
   0: 'Cancelled',
+  2: 'Elapsed',
 };
 
 
