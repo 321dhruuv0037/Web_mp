@@ -34,6 +34,7 @@ function StudentFootball() {
         const checkData = {
           date: mysqlDate,
           start_time: selectedOption.start,
+          end_time: selectedOption.end,
           venue_id: getVenueVariable(),
         }
         console.log('Working1');
@@ -77,6 +78,7 @@ function StudentFootball() {
                 } else {
                   alert('Failed to delete booking');
                   console.error('Failed to delete booking');
+                  return;
                 }
               })
               .catch((error) => {
@@ -272,11 +274,11 @@ const termsContainerStyles = {
                   style={inputStyles}
                 >
                   <option value="" disabled>Select Time Slot</option>
-                  <option value='{"start": "1330", "end": "1345"}'>13:30 to 14:00</option>
-                  <option value='{"start": "1345", "end": "1400"}'>16:00 to 16:30</option>
-                  <option value='{"start": "1345", "end": "1400"}'>16:30 to 17:00</option>
-                  <option value='{"start": "1345", "end": "1400"}'>17:00 to 17:30</option>
-                  <option value='{"start": "1345", "end": "1400"}'>17:30 to 18:00</option>
+                  <option value='{"start": "1330", "end": "1400"}'>13:30 to 14:00</option>
+                  <option value='{"start": "1600", "end": "1630"}'>16:00 to 16:30</option>
+                  <option value='{"start": "1630", "end": "1700"}'>16:30 to 17:00</option>
+                  <option value='{"start": "1700", "end": "1730"}'>17:00 to 17:30</option>
+                  <option value='{"start": "1730", "end": "1800"}'>17:30 to 18:00</option>
                 </select>
               </label>
             </div>

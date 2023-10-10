@@ -78,15 +78,16 @@
     border: none;
     outline: none;
     height: 40px;
-    background: linear-gradient(90deg, black 0%, rgb(75, 14, 154, 1) 35%, cyan 100%);
-    color: #fff;
+    border: black solid 1px;
+    color: black;
+    /*color: #fff;*/
     font-size: 18px;
     border-radius: 20px;
   }
   
   .loginbox input[type="submit"]:hover {
     cursor: pointer;
-    background: #ffc107;
+    background: #a5a49d;
     color: #000;
   }
   

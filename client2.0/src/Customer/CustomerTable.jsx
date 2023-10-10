@@ -1,6 +1,23 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import CancellationModal from '../Components/CancellationModal';
+import CancellationModal from '../Components/CancellationModal'
+import { getUserVariable, setUserVariable, setLevelVariable, getLevelVariable } from '../global';
+
+
+const venueMapping = {
+  1: 'Football Ground',
+  2: 'Basketball Court',
+  3: 'Top Court',
+  4: 'Mondini Hall',
+  5: 'Seminar Hall',
+  // Add more mappings as needed
+};
+
+const statusMapping = {
+  1: 'Active',
+  0: 'Cancelled',
+};
+
 
 const tableStyle = {
   borderCollapse: 'collapse',
@@ -35,8 +52,37 @@ class CustomerTable extends Component {
     super(props);
     this.state = {
       selectedBooking: null,
+      bookings: [],
     };
   }
+
+  componentDidMount() {
+    this.fetchBookings();
+  }
+  fetchBookings = async () => {
+    try {
+      const user_id = getUserVariable(); // Get the user ID from your function
+      console.log(user_id);
+      const response = await fetch(`http://localhost:3000/getAllBooking/${user_id}`);
+      if (!response.ok) {
+        console.log('Failed to fetch data');
+      }
+      const data = await response.json();
+
+      // Map venue_id to venue names
+      const bookingsWithVenueNames = data.map((booking) => {
+        return {
+          ...booking,
+          venue: venueMapping[booking.venue_id] || 'Unknown Venue',
+          status: statusMapping[booking.status] || 'Unknown Status'
+        };
+      });
+
+      this.setState({ bookings: bookingsWithVenueNames });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   handleModalOpen = (booking) => {
     this.setState({ selectedBooking: booking });
@@ -46,11 +92,33 @@ class CustomerTable extends Component {
     this.setState({ selectedBooking: null });
   };
 
+  handleCancelBooking = async () => {
+  try {
+    const { selectedBooking } = this.state;
+    // Assuming you have an endpoint for canceling bookings, adjust the URL accordingly
+    const response = await fetch(`http://localhost:3000/deleteBooking/${selectedBooking.id}`, {
+      method: 'DELETE', // or 'DELETE' depending on your API
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to cancel booking');
+    }
+
+    // Refresh the booking data after cancellation
+    this.fetchBookings();
+
+    // Close the modal
+    this.handleModalClose();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
   render() {
-    const data = [
-      { bookingId: 1, name: 'John Doe', venue: 'Mondini Hall', startTime: '3:00 PM', endTime: '5:00 PM', status: 'Booked', paymentInfo: 'Paid' },
-      { bookingId: 2, name: 'Jane Smith', venue: 'Seminar Hall', startTime: '2:30 PM', endTime: '4:30 PM', status: 'Booked', paymentInfo: 'Paid' },
-    ];
+    const { bookings } = this.state;
 
     return (
       <div>
@@ -59,32 +127,30 @@ class CustomerTable extends Component {
           <thead>
             <tr>
               <th style={thStyle}>Booking ID</th>
-              <th style={thStyle}>Name</th>
               <th style={thStyle}>Venue</th>
+              <th style={thStyle}>Date</th>
               <th style={thStyle}>Start Time</th>
               <th style={thStyle}>End Time</th>
               <th style={thStyle}>Status</th>
-              <th style={thStyle}>Payment Info</th>
             </tr>
           </thead>
           <tbody>
-            {data.map((row) => (
-              <tr key={row.bookingId}>
-                <td style={tdStyle}>
-                  <Link
-                    to="#"
-                    onClick={() => this.handleModalOpen(row)}
-                    style={{ textDecoration: 'none', color: 'blue', cursor: 'pointer' }}
-                  >
-                    {row.bookingId}
-                  </Link>
-                </td>
-                <td style={tdStyle}>{row.name}</td>
-                <td style={tdStyle}>{row.venue}</td>
-                <td style={tdStyle}>{row.startTime}</td>
-                <td style={tdStyle}>{row.endTime}</td>
-                <td style={tdStyle}>{row.status}</td>
-                <td style={tdStyle}>{row.paymentInfo}</td>
+            {bookings.map((row) => (
+              <tr key={row.id}>
+              <td style={tdStyle}>
+              <Link
+                to="#"
+                onClick={() => this.handleModalOpen(row)}
+                style={{ textDecoration: 'none', color: 'blue', cursor: 'pointer' }}
+              >
+              {row.id}
+              </Link>
+              </td>
+              <td style={tdStyle}>{row.venue}</td>
+              <td style={tdStyle}>{row.date}</td>
+              <td style={tdStyle}>{row.start_time}</td>
+              <td style={tdStyle}>{row.end_time}</td>
+              <td style={tdStyle}>{row.status}</td>
               </tr>
             ))}
           </tbody>

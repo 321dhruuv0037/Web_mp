@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const { Op } = require("sequelize");
 
 const app = express()
 app.use(bodyParser.json());
@@ -146,14 +147,46 @@ app.get('/getAllBooking/:user_id', async (req, res) => {
 
 app.post('/getBookingByDateTimeVenue', async (req, res) => {
     try{
-        const {date, start_time, venue_id} = req.body;
-        const booking = await Booking.findOne({ where: { date: date , start_time: start_time, venue_id: venue_id } });
+        const {date, start_time,end_time, venue_id} = req.body;
+        const booking = await Booking.findOne({ where: {
+    date: date,
+    venue_id: venue_id,
+    [Op.or]: [
+      {
+        [Op.and]: [
+          { start_time: { [Op.gte]: start_time } }, // Case 1
+          { end_time: { [Op.lte]: end_time } },     // Case 1
+        ],
+      },
+        {
+        [Op.and]: [
+          { start_time: { [Op.lt]: start_time } }, // Case 1
+          { end_time: { [Op.gt]: end_time } },     // Case 1
+        ],
+      },
+      {
+        [Op.and]: [
+          { start_time: { [Op.lt]: start_time } },   // Case 2
+          { end_time: { [Op.lte]: end_time } },      // Case 2
+          { end_time: { [Op.gt]: start_time } },     // Case 2
+        ],
+      },
+      {
+        [Op.and]: [
+          { start_time: { [Op.gte]: start_time } }, // Case 3
+          { start_time: { [Op.lt]: end_time } },    // Case 3
+          { end_time: { [Op.gt]: end_time } },       // Case 3
+        ],
+      },
+    ],
+  },
+        });
 
         if (!booking) {
             return res.status(400).json({ error: "Booking not found" });
         }
 
-        const { id, user_id, level,end_time, status } = booking;
+        const { id, user_id, level, status } = booking;
 
         res.status(200).json({
             id: id,
@@ -162,7 +195,7 @@ app.post('/getBookingByDateTimeVenue', async (req, res) => {
             level: level,
             date: booking.date,
             start_time: booking.start_time,
-            end_time: end_time,
+            end_time: booking.end_time,
             status: status,
         });
     } catch (error){
