@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
 const {Op} = require("sequelize");
+const cron = require('node-cron');
+
 
 const app = express()
 app.use(bodyParser.json());
@@ -56,7 +58,7 @@ app.get("/getUser/:id", async (req, res) => {
         }
 
         // Access the user's properties and send them in the response
-        const { name,email, password, department, level} = user;
+        const {name, email, password, department, level} = user;
 
         res.status(200).json({
             id: user.id,
@@ -290,6 +292,37 @@ app.post('/bookingEmail', (req, res) => {
     });
 });
 
+async function updateBookingStatus() {
+    try {
+        const currentDate = new Date();
+        const currentHour = currentDate.getHours() * 100 + currentDate.getMinutes();
+
+        const bookingsToUpdate = await Booking.findAll({
+            where: {
+                status: 1, // Assuming status 1 represents active bookings
+                [Op.or]: [
+                    {
+                        date: { [Op.lt]: currentDate }, // Date has elapsed
+                    },
+                    {
+                        date: currentDate, // Date is the current date
+                        end_time: { [Op.lt]: currentHour }, // End time has elapsed
+                    },
+                ],
+            },
+        });
+
+        if (bookingsToUpdate.length > 0) {
+            for (const booking of bookingsToUpdate) {
+                booking.status = 2; // Set status to 2 for elapsed bookings
+                await booking.save();
+            }
+            console.log(`Updated ${bookingsToUpdate.length} bookings to status 2.`);
+        }
+    } catch (error) {
+        console.error('Error updating booking statuses:', error);
+    }
+}
 
 // routers
 const userRouter = require('./routes/userRoute.js')
@@ -310,4 +343,6 @@ const PORT = process.env.PORT || 3000
 //server
 app.listen(PORT, () => {
     console.log(`server is running on port http://localhost:${PORT}`)
+
+    cron.schedule('* * * * *', updateBookingStatus);
 })
