@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import '../Registration/Signup.css'; // Create this CSS file for styling
+//import bcrypt from 'bcrypt';
+
 
 function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [department, setDepartment] = useState('');
-  const [userType, setUserType] = useState('');
   const [error, setError] = useState('');
 
   const isPasswordValid = (password) => {
@@ -40,85 +41,183 @@ function Signup() {
       return false;
     }
 
-    // Check if the password contains the user's name (case insensitive)
-    if (name && password.toLowerCase().includes(name.toLowerCase())) {
-      setError('Password cannot contain your name.');
-      return false;
+    // Check if the password contains the user's name (case-insensitive)
+    const nameParts = name.toLowerCase().split(' ');
+    const passwordLower = password.toLowerCase();
+
+    // Check all permutations of name parts
+    for (let i = 0; i < nameParts.length; i++) {
+      for (let j = 0; j < nameParts.length; j++) {
+        if (i !== j) {
+          const permutation = nameParts[i] + nameParts[j];
+
+          // Check if the permutation exists in the password
+          if (passwordLower.includes(permutation)) {
+            setError('Password cannot contain your name');
+            return false;
+          }
+        }
+      }
+    }
+
+    // Check if any individual name part exists in the password
+    for (const namePart of nameParts) {
+      if (passwordLower.includes(namePart)) {
+        setError('Password cannot contain your name');
+        return false;
+      }
     }
 
     setError(''); // Clear any previous error messages
     return true;
   };
 
+  let userTypeValue = 0;// user level value for database
+  let departmentValue = 0;// user department
+
+  const isEmailValid = (email) => {
+
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/; // checking email format
+    const studentRegex = /^3.*@dbit\.in$/; //checking for student email
+    const teachingStaffRegex = /^101.*@dbit\.in$/; //checking for teacher's email
+    const fatherRegex = /^102.*@dbit\.in$/; //checking for father's email
+    const nonTeachingStaffRegex = /^103.*@dbit\.in$/; //checking for non teaching staff email
+
+    if (emailRegex.test(email)) {
+
+      if (studentRegex.test(email)) {
+        userTypeValue = 1;
+      } else if (teachingStaffRegex.test(email)) {
+        userTypeValue = 3;
+      } else if (fatherRegex.test(email)) {
+        userTypeValue = 4;
+      } else if (nonTeachingStaffRegex.test(email)) {
+        userTypeValue = 2;
+      } else {
+        userTypeValue = 0; //default user/customer
+      }
+
+    } else {
+      setError('Please enter valid email');
+      return;
+    }
+
+    setError(''); // Clear any previous error messages
+    return true;
+  };
+
+
+
+  const setDepartmentValue = (department) => {
+
+    if (userTypeValue === 1) {
+      switch (department) {
+        case 'IT':
+          departmentValue = 11;
+          return true;
+        case 'COMPS':
+          departmentValue = 12;
+          return true;
+        case 'EXTC':
+          departmentValue = 13;
+          return true;
+        case 'MECH':
+          departmentValue = 14;
+          return true;
+        default:
+          setError('Email does not match with the Department chosen');
+          return false;
+      }
+    } else if(userTypeValue === 3){
+      switch (department) {
+        case 'IT':
+          departmentValue = 31;
+          return true;
+        case 'COMPS':
+          departmentValue = 32;
+          return true;
+        case 'EXTC':
+          departmentValue = 33;
+          return true;
+        case 'MECH':
+          departmentValue = 34;
+          return true;
+        default:
+          setError('Email does not match with the Department chosen');
+          return false;
+      }
+    } else if(userTypeValue === 4){
+      if (department === 'FATHER'){
+        departmentValue = 40;
+        return true;
+      } else {
+        setError('Email does not match with the Department chosen');
+        return;
+      }
+    } else if(userTypeValue === 2){
+      if (department === 'NONT'){
+        departmentValue = 20;
+        return true;
+      } else {
+        setError('Email does not match with the Department chosen');
+        return false;
+      }
+    }
+
+    setError('');
+  };
+
   const handleSignUp = async (e) => {
     e.preventDefault();
-    // You can add your login logic here and handle errors
+
+    //password validation
     if (!isPasswordValid(password)) {
       return;
     }
 
-    let departmentValue = 0;
-    switch (department) {
-      case 'IT':
-        departmentValue = 1;
-        break;
-      case 'COMPS':
-        departmentValue = 2;
-        break;
-      case 'EXTC':
-        departmentValue = 3;
-        break;
-      case 'MECH':
-        departmentValue = 4;
-        break;
-      case 'NONE':
-        departmentValue = 5;
-        break;
-      default:
-        departmentValue = 0;
+    //email validation
+    if(!isEmailValid(email)) {
+      return;
     }
 
-    setError('');
-
-    let userTypeValue = 0;
-    switch (userType) {
-      case 'Student':
-        userTypeValue = 1;
-        break;
-      case 'Faculty':
-        userTypeValue = 2;
-        break;
-      case 'Customer':
-        userTypeValue = 3;
-        break;
-      default:
-        userTypeValue = 0;
+    //setting department value
+    if(!setDepartmentValue(department)){
+      return;
     }
 
-    setError('');
+    try {
+      const response = await fetch(`http://localhost:3000/getOneUser/${email}`);
 
-    const userData = {
-      name,
-      password,
-      email,
-      department: departmentValue,
-      level: userTypeValue, // Assuming userType corresponds to "level" on the server
-    };
+      if (response.status === 200) {
+        setError('User already exists');
+        return;
+      } else {
+        try {
+          const userData = {
+            name,
+            password,
+            email,
+            department: departmentValue,
+            level: userTypeValue,
+          };
 
-    try{
-      const response = await fetch(`http://localhost:3000/addUser`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
+          const response = await fetch(`http://localhost:3000/addUser`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+          });
 
-    if (response.status === 200) {
-      window.location.href = '/Logins.jsx';
-    } else {
-      console.error('Server error');
-    }
+          if (response.status === 200) {
+            window.location.href = '/logins';
+          } else {
+            console.error('Server error');
+          }
+        } catch (error) {
+          console.error('An error occurred', error);
+        }
+      }
     } catch (error) {
       console.error('An error occurred', error);
     }
@@ -138,6 +237,7 @@ function Signup() {
             placeholder="Enter Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
           <p>Email</p>
           <input
@@ -146,6 +246,7 @@ function Signup() {
             placeholder="Enter Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <p>Password</p>
           <input
@@ -154,6 +255,7 @@ function Signup() {
             placeholder="Enter Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <div className="d-flex">
             <div className="w-50 pr-2">
@@ -162,28 +264,16 @@ function Signup() {
                 name="department"
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
+                required
               >
-                <option value="">Select Department</option>
+                <option value="" disabled>Select Department</option>
                 <option value="IT">IT</option>
                 <option value="COMPS">COMPS</option>
                 <option value="EXTC">EXTC</option>
                 <option value="MECH">MECH</option>
-                <option value="NONE">NONE</option>
+                <option value="FATHER">FATHER</option>
+                <option value="NONT">MANAGEMENT</option>
                 {/* Add more department options as needed */}
-              </select>
-            </div>
-            <div className="w-50 pl-2">
-              <p>User Type</p>
-              <select
-                name="userType"
-                value={userType}
-                onChange={(e) => setUserType(e.target.value)}
-              >
-                <option value="">Select User Type</option>
-                <option value="Student">Student</option>
-                <option value="Faculty">Faculty</option>
-                <option value="Customer">Customer</option>
-                {/* Add more user type options as needed */}
               </select>
             </div>
           </div>

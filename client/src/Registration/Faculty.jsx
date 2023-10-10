@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css'; // Create this CSS file for styling
 import { Link } from 'react-router-dom';
+import { getUserVariable, setUserVariable, setLevelVariable, getLevelVariable } from '../global';
 
 function Faculty() {
   const [username, setUsername] = useState('');
@@ -22,12 +23,22 @@ function Faculty() {
               const user = await response.json();
 
               if (password === user.password) {
-                  alert("Valid credentials");
+                  if (user.level != 1) {
+                      alert("Valid credentials");
+                      setUserVariable(user.id);
+                      setLevelVariable(user.level);
+                      console.log(getUserVariable());
+                  } else {
+                      console.log('Error1');
+                      setError("Invalid username or password");
+                  }
                   // You can redirect the user or perform other actions upon successful login
               } else {
+                  console.log('Error2');
                   setError("Invalid username or password");
               }
           } else if (response.status === 404) {
+              console.log('Error3');
               setError("Invalid username or password");
           } else {
               console.error('Server error');

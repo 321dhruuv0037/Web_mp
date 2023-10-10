@@ -1,20 +1,148 @@
 import React, { useState } from 'react';
 import img2 from '../assets/img2.jpg'; // Import the background image
+import { getUserVariable,
+        setUserVariable,
+        setVenueVariable,
+        getVenueVariable,
+        setLevelVariable,
+        getLevelVariable } from '../global';
+
 
 function Football() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [termsAgreed, setTermsAgreed] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission (e.g., send data to a backend API)
+    setVenueVariable(1);
+
+    //converting react date format to mysql DATE datatype format
+    const dt = new Date(date)
+    const mysqlDate = dt.toISOString().slice(0, 10);
+
+    //checking whether the date picked is withing 10 days from current date
+    const currentDate = new Date();
+    const tenDaysLater = new Date();
+    tenDaysLater.setDate(currentDate.getDate() + 10);
+
+    if (!firstName || !lastName || !email || !phoneNumber || !date || !time || !paymentMethod || !termsAgreed) {
+      alert("Please Enter/Select all the fields")
+      return;
+    } else if(dt <= currentDate || dt > tenDaysLater){
+      alert("Choose a date 10 days from now")
+      return;
+    } else {
+      try{
+        const checkData = {
+          date: mysqlDate,
+          start_time: time,
+          venue_id: getVenueVariable(),
+        }
+        console.log('Working1');
+        const response = await fetch(`http://localhost:3000/getBookingByDateTimeVenue`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(checkData),
+        });
+        console.log('Working2');
+        const booking = await response.json();
+        console.log('Working3');
+        if (response.status === 200){
+          if (booking.level >= getLevelVariable()){
+            alert("Slot already full")
+          } else {
+            console.log('Working4');
+            try {
+            const footballData = {
+              user_id: getUserVariable(),
+              venue_id: getVenueVariable(),
+              level: getLevelVariable(),
+              date: mysqlDate,
+              start_time: time,
+              end_time: 1900,
+              status: 1,
+            };
+
+            fetch(`http://localhost:3000/deleteBooking/:${booking.id}`, {
+              method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(checkData),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  alert('Booking deleted successfully');
+                  console.log('Booking deleted successfully');
+                } else {
+                  alert('Failed to delete booking');
+                  console.error('Failed to delete booking');
+                }
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+
+            const response = await fetch(`http://localhost:3000/addBooking`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(footballData),
+            });
+
+            if (response.status === 200) {
+              alert("Booking Confirmed");
+            } else {
+              console.error('Server error');
+            }
+          } catch (error) {
+            console.error('An error occurred', error);
+          }
+          }
+        } else {
+          console.log('Working5');
+          try {
+            const footballData = {
+              user_id: getUserVariable(),
+              venue_id: getVenueVariable(),
+              level: getLevelVariable(),
+              date: mysqlDate,
+              start_time: time,
+              end_time: 1900,
+              status: 1,
+            };
+
+
+            const response = await fetch(`http://localhost:3000/addBooking`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(footballData),
+            });
+
+            if (response.status === 200) {
+              alert("Booking Confirmed");
+            } else {
+              console.error('Server error');
+            }
+          } catch (error) {
+            console.error('An error occurred', error);
+          }
+        }
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    }
   };
 
   const containerStyles = {
@@ -122,6 +250,7 @@ const termsContainerStyles = {
                 <input
                   type="text"
                   value={firstName}
+                  placeholder="Enter Firstname"
                   onChange={(e) => setFirstName(e.target.value)}
                   required
                   style={inputStyles}
@@ -134,6 +263,7 @@ const termsContainerStyles = {
                 <input
                   type="text"
                   value={lastName}
+                  placeholder="Enter Lastname"
                   onChange={(e) => setLastName(e.target.value)}
                   required
                   style={inputStyles}
@@ -149,6 +279,7 @@ const termsContainerStyles = {
                   <input
                     type="email"
                     value={email}
+                    placeholder="Enter email"
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     style={inputStyles}
@@ -161,6 +292,7 @@ const termsContainerStyles = {
                   <input
                     type="tel"
                     value={phoneNumber}
+                    placeholder="Enter phonenumber"
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     required
                     style={inputStyles}
@@ -182,16 +314,21 @@ const termsContainerStyles = {
                 />
               </label>
             </div>
-            <div className="time-input" style={dateInputStyles}>
+            <div className="time-input" >
               <label>
                 Time:
-                <input
-                  type="time"
+                <select
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   required
                   style={inputStyles}
-                />
+                >
+                  <option value="" disabled>Select Time Slot</option>
+                  <option value="1700">17:00 to 18:00</option>
+                  <option value="1800">18:00 to 19:00</option>
+                  <option value="1900">19:00 to 20:00</option>
+                  <option value="2000">20:00 to 21:00</option>
+                </select>
               </label>
             </div>
           </div>

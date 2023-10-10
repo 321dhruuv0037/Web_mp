@@ -1,0 +1,78 @@
+/* Style the section background and text color */
+.section-white {
+    background-color: #fff;
+    color: #333;
+    padding: 60px 0;
+}
+
+/* Center the section title and subtitle */
+.section-title {
+    font-size: 34px;
+    margin-bottom: 10px;
+    margin-top: 55px;
+}
+
+.section-subtitle {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* Style the team member cards */
+.team-item {
+    background-color: #c4bdbd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.team-item:hover {
+    transform: translateY(-5px);
+}
+
+.team-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.team-info h3 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.team-info p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+/* Style the social media icons */
+.team-icon {
+    list-style: none;
+    padding: 0;
+}
+
+.team-icon li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.team-icon a {
+    color: #333;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .team-item {
+        margin-bottom: 30px;
+    }
+
+    .team-img {
+        max-width: 80%;
+    }
+}

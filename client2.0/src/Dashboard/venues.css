@@ -1,0 +1,123 @@
+/* Style the dashboard section background and text color */
+.dashboard-section {
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 0px 0;
+    margin-top: 20px;
+  }
+
+/* CSS for the welcome message and image */
+.welcome-message {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .welcome-content {
+    flex: 1;
+  }
+  
+  .welcome-content h2 {
+    font-size: 38px;
+    color: #0f664d !important;
+    margin-bottom: 10px;
+  }
+  
+  .welcome-content p {
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  
+  .welcome-image {
+    flex: 1;
+    text-align: right;
+  }
+  
+  .welcome-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  /* Media query for screens smaller than 768px */
+  @media (max-width: 768px) {
+    .welcome-message {
+      flex-direction: column;
+      text-align: center;
+      margin-top: 60px;
+    }
+  
+    .welcome-image {
+      order: -1; /* Place the image above the welcome content */
+       /* Add some spacing between image and text */
+       margin-top: 20px; /* Add some spacing between image and text */
+    margin-left: 0; /* Remove margin on smaller screens */
+    }
+    .welcome-content {
+        margin-right: 0; /* Remove margin on smaller screens */
+        margin-top: 25px; /* Add spacing between welcome content and image */
+      }
+     
+    
+  }
+  
+
+  
+  /* Style the dashboard cards */
+  .dashboard-card {
+    display: flex;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    transition: transform 0.3s ea
+    se;
+    width: 100%; /* Increase the width */
+  }
+  
+  /* Style the dashboard images */
+  .dashboard-img {
+    width: 50%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+    border-radius: 10px;
+    margin-right: 20px;
+  }
+  
+  /* Style the dashboard info */
+  .dashboard-info {
+    flex-grow: 1;
+  }
+  
+  .dashboard-info h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-info p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* Hover effect for the dashboard card */
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+  }
+  .row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+    flex-direction: row;
+}
+
+
+

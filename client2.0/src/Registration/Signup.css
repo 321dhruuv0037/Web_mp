@@ -1,0 +1,173 @@
+* {
+    margin: 0;
+    padding: 0px;
+    font-family: sans-serif;
+  }
+  
+  body {
+    height: 100vh;
+    width: 100%;
+  
+    background-repeat: no-repeat;
+   
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+  }
+  
+  .loginbox {
+    max-width: 500px; /* reduce the width */
+    width: 90%; /* set width as a percentage for responsiveness */
+    height: auto; /* remove fixed height */
+    border-radius: 25px;
+    background: rgb(252, 250, 247);
+    color: white;
+    top: 52%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 50px 30px; /* reduce the padding */
+  }
+  
+  h1 {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 32px;
+    color: rgb(94, 78, 78);
+  }
+  
+  .loginbox p {
+    margin: 10px;
+    padding: 0;
+    font-weight: bold;
+    font-size: 22px;
+    color: rgb(94, 78, 78);
+  }
+  
+  .loginbox input {
+    width: 100%;
+    margin-top: 10px; /* Reduce the margin-top */
+  }
+  
+  .loginbox input[type="text"],
+  .loginbox input[type="tel"],
+  .loginbox input[type="password"] {
+    border: none;
+    border-bottom: 1px solid rgb(17, 15, 15);
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: black;
+    font-size: 26px;
+    margin-top: 10px; /* Adjusted margin-top */
+    margin-left: 10px; /* Added margin-left for placeholders */
+  }
+  
+  .loginbox input[type="submit"] {
+    margin-top: 30px;
+    border: none;
+    outline: none;
+    height: 40px;
+    border: black solid 1px;
+    color: black;
+    /*color: #fff;*/
+    font-size: 18px;
+    border-radius: 20px;
+  }
+  
+  .loginbox input[type="submit"]:hover {
+    cursor: pointer;
+    background: #a5a49d;
+    color: #000;
+  }
+  
+  .loginbox a {
+    display: block;
+    text-decoration: none;
+    font-size: 22px;
+    line-height: 20px;
+    color: rgb(244, 241, 241);
+    margin-top: 20px; /* reduce the margin */
+    text-align: center;
+  }
+  
+  .loginbox a:hover {
+    color: #ffc107;
+    color: black;
+  }
+
+  .create a{
+    text-decoration: none;
+    font-size: 22px;
+    line-height: 20px;
+    color: rgb(108, 104, 104);
+    margin-top: 20px; /* reduce the margin */
+    text-align: center;
+  }
+
+  /* Add these styles to your Signup.css file or component */
+
+/* Style the parent container (flex container) */
+.d-flex {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; /* Adjust the margin as needed */
+}
+
+/* Style the Department and User Type dropdowns */
+.w-50 select {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-bottom: 1px solid rgb(17, 15, 15);
+  background: transparent;
+  outline: none;
+  color: black;
+  font-size: 16px;
+}
+
+/* Style the select options */
+.w-50 select option {
+  background-color: #fff; /* Background color for options */
+  color: #000; /* Text color for options */
+  
+}
+
+/* Style the select when hovered */
+.w-50 select:hover {
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Style the select when focused */
+.w-50 select:focus {
+  border: 1px solid rgba(30, 85, 250, 0.47);
+  background-color: #fff;
+}
+
+
+  /* Media Queries for Responsive Background */
+@media (max-width: 768px) {
+  body {
+    background-size: cover;
+    background-position: top;
+  }
+}
+
+@media (max-width: 576px) {
+  body {
+    background-size: cover;
+    background-position: center;
+  }
+}
+  
