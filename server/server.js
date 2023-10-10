@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
-const { Op } = require("sequelize");
+const {Op} = require("sequelize");
 
 const app = express()
 app.use(bodyParser.json());
@@ -17,7 +17,7 @@ app.use(cors());
 
 app.use(express.json())
 
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({extended: true}))
 
 //USER ROUTES
 app.get("/getOneUser/:email", async (req, res) => {
@@ -46,9 +46,35 @@ app.get("/getOneUser/:email", async (req, res) => {
     }
 });
 
+app.get("/getUser/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user = await User.findOne({where: {id: id}});
+
+        if (!user) {
+            return res.status(404).json({error: "User not found"});
+        }
+
+        // Access the user's properties and send them in the response
+        const { name,email, password, department, level} = user;
+
+        res.status(200).json({
+            id: user.id,
+            name: name,
+            email: email,
+            password: password,
+            department: department,
+            level: level,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: "Internal server error"});
+    }
+});
+
 app.post("/addUser", async (req, res) => {
-    try{
-        const {name,password,email,department,level} = req.body;
+    try {
+        const {name, password, email, department, level} = req.body;
         let info = {
             name: name,
             password: password,
@@ -60,7 +86,7 @@ app.post("/addUser", async (req, res) => {
         const user = await User.create(info);
         res.status(200).send(user);
         console.log(user);
-    } catch(error){
+    } catch (error) {
         console.error(error);
         res.status(500).json({error: "Internal server error"});
     }
@@ -69,7 +95,7 @@ app.post("/addUser", async (req, res) => {
 //BOOKINGS
 app.post('/addBooking', async (req, res) => {
     try {
-        const {user_id, venue_id, level, date, start_time,end_time, status} = req.body;
+        const {user_id, venue_id, level, date, start_time, end_time, status} = req.body;
         let data = {
             user_id: user_id,
             venue_id: venue_id,
@@ -82,7 +108,7 @@ app.post('/addBooking', async (req, res) => {
 
         const booking = await Booking.create(data);
         res.status(200).send(booking);
-    } catch (error){
+    } catch (error) {
         console.error(error);
         res.status(500).json({error: "Internal server error"});
     }
@@ -91,40 +117,40 @@ app.post('/addBooking', async (req, res) => {
 app.delete('/deleteBooking/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const booking = await Booking.findOne({ where: { id: id } });
+        const booking = await Booking.findOne({where: {id: id}});
 
         booking.status = 0;
         await booking.save();
 
-        res.status(200).json({ message: 'Booking deleted successfully' });
+        res.status(200).json({message: 'Booking deleted successfully'});
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({error: 'Internal server error'});
     }
 });
 
 app.delete('/deleteBooking', async (req, res) => {
     try {
         const {date, start_time, venue_id} = req.body;
-        const booking = await Booking.findOne({ where: { date: date , start_time: start_time, venue_id: venue_id } });
+        const booking = await Booking.findOne({where: {date: date, start_time: start_time, venue_id: venue_id}});
 
         booking.status = 0;
         await booking.save();
 
-        res.status(200).json({ message: 'Booking deleted successfully' });
+        res.status(200).json({message: 'Booking deleted successfully'});
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({error: 'Internal server error'});
     }
 });
 
 app.get('/getAllBooking/:user_id', async (req, res) => {
     try {
         const user_id = req.params.user_id;
-        const bookings = await Booking.findAll({ where: { user_id: user_id } });
+        const bookings = await Booking.findAll({where: {user_id: user_id}});
 
         if (bookings.length === 0) {
-            return res.status(400).json({ error: "No bookings found" });
+            return res.status(400).json({error: "No bookings found"});
         }
 
         const bookingList = bookings.map((booking) => {
@@ -141,52 +167,53 @@ app.get('/getAllBooking/:user_id', async (req, res) => {
         res.status(200).json(bookingList);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({error: 'Internal server error'});
     }
 });
 
 app.post('/getBookingByDateTimeVenue', async (req, res) => {
-    try{
-        const {date, start_time,end_time, venue_id} = req.body;
-        const booking = await Booking.findOne({ where: {
-    date: date,
-    venue_id: venue_id,
-    [Op.or]: [
-      {
-        [Op.and]: [
-          { start_time: { [Op.gte]: start_time } }, // Case 1
-          { end_time: { [Op.lte]: end_time } },     // Case 1
-        ],
-      },
-        {
-        [Op.and]: [
-          { start_time: { [Op.lt]: start_time } }, // Case 1
-          { end_time: { [Op.gt]: end_time } },     // Case 1
-        ],
-      },
-      {
-        [Op.and]: [
-          { start_time: { [Op.lt]: start_time } },   // Case 2
-          { end_time: { [Op.lte]: end_time } },      // Case 2
-          { end_time: { [Op.gt]: start_time } },     // Case 2
-        ],
-      },
-      {
-        [Op.and]: [
-          { start_time: { [Op.gte]: start_time } }, // Case 3
-          { start_time: { [Op.lt]: end_time } },    // Case 3
-          { end_time: { [Op.gt]: end_time } },       // Case 3
-        ],
-      },
-    ],
-  },
+    try {
+        const {date, start_time, end_time, venue_id} = req.body;
+        const booking = await Booking.findOne({
+            where: {
+                date: date,
+                venue_id: venue_id,
+                [Op.or]: [
+                    {
+                        [Op.and]: [
+                            {start_time: {[Op.gte]: start_time}}, // Case 1
+                            {end_time: {[Op.lte]: end_time}},     // Case 1
+                        ],
+                    },
+                    {
+                        [Op.and]: [
+                            {start_time: {[Op.lt]: start_time}}, // Case 1
+                            {end_time: {[Op.gt]: end_time}},     // Case 1
+                        ],
+                    },
+                    {
+                        [Op.and]: [
+                            {start_time: {[Op.lt]: start_time}},   // Case 2
+                            {end_time: {[Op.lte]: end_time}},      // Case 2
+                            {end_time: {[Op.gt]: start_time}},     // Case 2
+                        ],
+                    },
+                    {
+                        [Op.and]: [
+                            {start_time: {[Op.gte]: start_time}}, // Case 3
+                            {start_time: {[Op.lt]: end_time}},    // Case 3
+                            {end_time: {[Op.gt]: end_time}},       // Case 3
+                        ],
+                    },
+                ],
+            },
         });
 
         if (!booking) {
-            return res.status(400).json({ error: "Booking not found" });
+            return res.status(400).json({error: "Booking not found"});
         }
 
-        const { id, user_id, level, status } = booking;
+        const {id, user_id, level, status} = booking;
 
         res.status(200).json({
             id: id,
@@ -198,40 +225,69 @@ app.post('/getBookingByDateTimeVenue', async (req, res) => {
             end_time: booking.end_time,
             status: status,
         });
-    } catch (error){
+    } catch (error) {
         console.error(error);
         res.status(500).json({error: "Internal server error"});
     }
 });
 
-//EMAIL FOR CONTACT US
+//EMAIL
 app.post('/sendEmail', (req, res) => {
-  const { name, email, message } = req.body;
+    const {name, email, message} = req.body;
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'advay2003gujar@gmail.com',
-      pass: 'cfoi dbap ijlx ujth',
-    },
-  });
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'advay2003gujar@gmail.com',
+            pass: 'cfoi dbap ijlx ujth',
+        },
+    });
 
-  const mailOptions = {
-    from: 'advay2003gujar@gmail.com',
-    to: 'advay2003gujar@gmail.com',
-    subject: 'Contact Form Submission',
-    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
-  };
+    const mailOptions = {
+        from: 'advay2003gujar@gmail.com',
+        to: 'advay2003gujar@gmail.com',
+        subject: 'Contact Form Submission',
+        text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+    };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error(error);
-      res.status(500).send('Error sending email');
-    } else {
-      console.log('Email sent: ' + info.response);
-      res.status(200).send('Email sent successfully');
-    }
-  });
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Error sending email');
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.status(200).send('Email sent successfully');
+        }
+    });
+});
+
+app.post('/bookingEmail', (req, res) => {
+    const {name, email, message} = req.body;
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'advay2003gujar@gmail.com',
+            pass: 'cfoi dbap ijlx ujth',
+        },
+    });
+
+    const mailOptions = {
+        from: 'advay2003gujar@gmail.com',
+        to: email,
+        subject: 'Contact Form Submission',
+        text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Error sending email');
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.status(200).send('Email sent successfully');
+        }
+    });
 });
 
 

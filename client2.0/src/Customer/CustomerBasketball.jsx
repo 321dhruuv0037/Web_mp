@@ -1,35 +1,200 @@
 import React, { useState } from 'react';
-import img2 from '../assets/img1.jpg'; // Import the background image
+import img2 from '../assets/img2.jpg'; // Import the background image
 import BookingConfirmation from '../Components/BookingConfirmation';
+import { getUserVariable,
+        setUserVariable,
+        setVenueVariable,
+        getVenueVariable,
+        setLevelVariable,
+        getLevelVariable } from '../global';
+
+
 
 function CustomerBasketball() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [termsAgreed, setTermsAgreed] = useState(false);
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
 
-  const handleSubmit = (e) => {
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = (value) => {
+              setModalIsOpen(value);
+            };
+
+
+  const start = (startTime) => {
+    const [hourStr, minuteStr] = startTime.split(":");
+    const hour = parseInt(hourStr, 10);
+    const minute = parseInt(minuteStr, 10);
+
+    // Check if it's p.m. and adjust the hour accordingly
+    let adjustedHour = hour;
+    if (startTime.includes("PM")) {
+      adjustedHour = hour === 12 ? 12 : hour + 12;
+    } else if (startTime.includes("AM") && hour === 12) {
+      adjustedHour = 0;
+    }
+
+    // Convert the hour and minute to a 24-hour format integer (HHMM)
+    const timeAsInteger = adjustedHour * 100 + minute;
+    console.log(timeAsInteger);
+    // Update the state with the formatted time
+    return timeAsInteger;
+  }
+
+  const end = (endTime) => {
+    const [hourStr, minuteStr] = endTime.split(":");
+    const hour = parseInt(hourStr, 10);
+    const minute = parseInt(minuteStr, 10);
+
+    // Check if it's p.m. and adjust the hour accordingly
+    let adjustedHour = hour;
+    if (endTime.includes("PM")) {
+      adjustedHour = hour === 12 ? 12 : hour + 12;
+    } else if (endTime.includes("AM") && hour === 12) {
+      adjustedHour = 0;
+    }
+
+    // Convert the hour and minute to a 24-hour format integer (HHMM)
+    const timeAsInteger = adjustedHour * 100 + minute;
+
+    // Update the state with the formatted time
+    return timeAsInteger;
+  }
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission (e.g., send data to a backend API)
+    setVenueVariable(2);
+
+    //converting react date format to mysql DATE datatype format
+    const dt = new Date(date)
+    const mysqlDate = dt.toISOString().slice(0, 10);
+
+    //checking whether the date picked is withing 10 days from current date
+    const currentDate = new Date();
+    const tenDaysLater = new Date();
+    tenDaysLater.setDate(currentDate.getDate() + 10);
+
+    if(dt <= currentDate || dt > tenDaysLater){
+      alert("Choose a date 10 days from now")
+      return;
+    } else {
+      try{
+         // Create a state variable for the modal
+
+
+        const checkData = {
+          date: mysqlDate,
+          start_time: start(startTime),
+          end_time: end(endTime),
+          venue_id: getVenueVariable(),
+        }
+        console.log('Working1');
+        const response = await fetch(`http://localhost:3000/getBookingByDateTimeVenue`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(checkData),
+        });
+        console.log('Working2');
+        const booking = await response.json();
+        console.log('Working3');
+        if (response.status === 200){
+          if (booking.level >= getLevelVariable()){
+            alert("Slot already full")
+          } else {
+            console.log('Working4');
+            try {
+            const footballData = {
+              user_id: getUserVariable(),
+              venue_id: getVenueVariable(),
+              level: getLevelVariable(),
+              date: mysqlDate,
+              start_time: start(startTime),
+              end_time: end(endTime),
+              status: 1,
+            };
+
+            fetch(`http://localhost:3000/deleteBooking`, {
+              method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(checkData),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  alert('Booking deleted successfully');
+                  console.log('Booking deleted successfully');
+                } else {
+                  alert('Failed to delete booking');
+                  console.error('Failed to delete booking');
+                  return;
+                }
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+
+            const response = await fetch(`http://localhost:3000/addBooking`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(footballData),
+            });
+
+            if (response.status === 200) {
+              // Function to open the modal
+              openModal(true);
+            } else {
+              console.error('Server error');
+            }
+          } catch (error) {
+            console.error('An error occurred', error);
+          }
+          }
+        } else {
+          console.log('Working5');
+          try {
+            const footballData = {
+              user_id: getUserVariable(),
+              venue_id: getVenueVariable(),
+              level: getLevelVariable(),
+              date: mysqlDate,
+              start_time: start(startTime),
+              end_time: end(endTime),
+              status: 1,
+            };
+
+
+            const response = await fetch(`http://localhost:3000/addBooking`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(footballData),
+            });
+
+            if (response.status === 200) {
+              openModal(true);
+            } else {
+              console.error('Server error');
+            }
+          } catch (error) {
+            console.error('An error occurred', error);
+          }
+        }
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    }
   };
 
-      // Create a state variable for the modal
-      const [modalIsOpen, setModalIsOpen] = useState(false);
-
-      // Function to open the modal
-      const openModal = () => {
-        setModalIsOpen(true);
-      };
-    
-      // Function to close the modal
-      const closeModal = () => {
-        setModalIsOpen(false);
-      };
+     const closeModal = () => {
+       setModalIsOpen(false);
+  };
 
   const containerStyles = {
     maxWidth: '800px', // Increased form width
@@ -49,7 +214,7 @@ function CustomerBasketball() {
     padding: '10px', // Adjusted padding
     marginTop: '10px', // Increased margin-top
     marginBottom: '10px', // Added margin-bottom
-    
+
     borderRadius: '10px', // Increased border radius
     fontSize: '16px', // Increased font size for better readability
   };
@@ -93,7 +258,7 @@ const termsContainerStyles = {
     alignItems: 'center',
     marginTop: '10px', // Adjust spacing
   };
-  
+
   /* Add styles for the terms and conditions checkbox */
   const termsCheckboxStyles = {
     marginRight: '5px', // Adjust spacing
@@ -127,62 +292,8 @@ const termsContainerStyles = {
   return (
     <div style={backgroundStyles}>
       <div className="football-container" style={containerStyles}>
-        <h2>Book Basketball Court</h2>
+        <h2>Book Football Ground</h2>
         <form onSubmit={handleSubmit}>
-          <div className="name-container" style={nameEmailContainerStyles}>
-            <div className="name-input" style={nameInputStyles}>
-              <label>
-                First Name:
-                <input
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
-                  style={inputStyles}
-                />
-              </label>
-            </div>
-            <div className="name-input" style={nameInputStyles}>
-              <label>
-                Last Name:
-                <input
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  required
-                  style={inputStyles}
-                />
-              </label>
-            </div>
-          </div>
-          <div className="email-phone-container" style={nameEmailContainerStyles}>
-            <div className="email-phone-input" style={nameEmailContainerStyles}>
-              <div className="email-input" style={inputStyles}>
-                <label>
-                  Email Address:
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={inputStyles}
-                  />
-                </label>
-              </div>
-              <div className="phone-input" style={inputStyles}>
-                <label>
-                  Phone Number:
-                  <input
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    required
-                    style={inputStyles}
-                  />
-                </label>
-                </div>
-            </div>
-          </div>
           <div className="date-time-container" style={dateTimeContainerStyles}>
             <div className="date-input" style={dateInputStyles}>
               <label>
@@ -201,8 +312,8 @@ const termsContainerStyles = {
                 Start Time:
                 <input
                   type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
                   required
                   style={inputStyles}
                 />
@@ -213,40 +324,13 @@ const termsContainerStyles = {
                 End Time:
                 <input
                   type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
                   required
                   style={inputStyles}
                 />
               </label>
             </div>
-          </div>
-          <div className="payment-container">
-          <label>
-            Payment Method:
-            <select
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              required
-              style={inputStyles}
-            >
-              <option value="">Select Payment Method</option>
-              <option value="creditCard">Credit Card</option>
-              <option value="cash">Cash</option>
-              <option value="onlinePayment">Online Payment</option>
-            </select>
-          </label>
-          </div>
-          <div className="terms-container" style={termsContainerStyles}>
-          <label>
-            <input
-              type="checkbox"
-              checked={termsAgreed}
-              onChange={() => setTermsAgreed(!termsAgreed)}
-              required
-            />{' '}
-            I agree to the terms and conditions
-          </label>
           </div>
           <button type="submit" style={submitButtonStyles} onClick={openModal}>
           Book Court

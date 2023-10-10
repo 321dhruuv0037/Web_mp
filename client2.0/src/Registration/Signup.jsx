@@ -95,7 +95,7 @@ function Signup() {
       } else if (nonTeachingStaffRegex.test(email)) {
         userTypeValue = 2;
       } else {
-        userTypeValue = 0; //default user/customer
+        userTypeValue = 5; //default user/customer
       }
 
     } else {
@@ -158,6 +158,14 @@ function Signup() {
     } else if(userTypeValue === 2){
       if (department === 'NONE'){
         departmentValue = 20;
+        return true;
+      } else {
+        setError('Email does not match with the Department chosen');
+        return false;
+      }
+    } else if(userTypeValue === 5){
+      if (department === 'NONE'){
+        departmentValue = 50;
         return true;
       } else {
         setError('Email does not match with the Department chosen');
