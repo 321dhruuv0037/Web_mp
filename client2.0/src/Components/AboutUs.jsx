@@ -1,6 +1,7 @@
 import React from "react";
 import {
   FaEnvelopeSquare,
+  FaFileDownload,
   FaGithubSquare,
   FaInstagramSquare,
   FaTwitterSquare,
@@ -9,7 +10,8 @@ import "./about.css";
 import image1 from "../assets/Aryaan.webp"; // Import your WebP images
 import image2 from "../assets/Dhruuv.webp";
 import image3 from "../assets/Advay.webp";
-const iconSize = "32px"; 
+import resume2 from "../assets/dhruuv_resume.pdf";
+const iconSize = "32px";
 function AboutUs() {
   const teamMembers = [
     {
@@ -19,9 +21,9 @@ function AboutUs() {
       socialLinks: {
         twitter: "#",
         github: "https://github.com/ARYAAN2903",
+        resume: resume2,
       },
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quia vitae natus nihil deleniti ipsum voluptatum excepturi quibusdam eligendi nulla repudiandae voluptate enim doloribus asperiores esse rem, consectetur, corporis dolores.",
+      description: "जसे करावे तसे भरावे",
     },
     {
       name: "Dhruuv Naik",
@@ -30,6 +32,7 @@ function AboutUs() {
       socialLinks: {
         twitter: "#",
         github: "https://github.com/321dhruuv0037",
+        resume: resume2,
       },
       description:
         "A jack of all trades is a master of none but oftentimes better than a master of one.",
@@ -41,9 +44,10 @@ function AboutUs() {
       socialLinks: {
         twitter: "#",
         github: "https://github.com/sleepyslayer",
+        resume: resume2,
       },
       description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quia vitae natus nihil deleniti ipsum voluptatum excepturi quibusdam eligendi nulla repudiandae voluptate enim doloribus asperiores esse rem, consectetur, corporis dolores.",
+        "ूबते को तिनके का सहारा.",
     },
   ];
 
@@ -137,13 +141,30 @@ function AboutUs() {
 
                   <ul className="team-icon">
                     <li>
-                      <a href={member.socialLinks.twitter} className="twitter" target="_blank">
+                      <a
+                        href={member.socialLinks.twitter}
+                        className="twitter"
+                        target="_blank"
+                      >
                         <FaEnvelopeSquare size={iconSize} />{" "}
                       </a>
                     </li>
                     <li>
-                      <a href={member.socialLinks.github} className="github" target="_blank">
-                        <FaGithubSquare size={iconSize}/>
+                      <a
+                        href={member.socialLinks.github}
+                        className="github"
+                        target="_blank"
+                      >
+                        <FaGithubSquare size={iconSize} />
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href={member.socialLinks.resume}
+                        className="github"
+                        target="_blank"
+                      >
+                        <FaFileDownload size={iconSize} />
                       </a>
                     </li>
                   </ul>

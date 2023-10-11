@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../Registration/Signup.css'; // Create this CSS file for styling
 import { useNavigate } from 'react-router-dom';
+import md5 from 'md5'; 
 
 
 function Signup() {
@@ -193,7 +194,7 @@ function Signup() {
     if(!setDepartmentValue(department)){
       return;
     }
-
+    const hashedPassword = md5(password);
     try {
       const response = await fetch(`http://localhost:3000/getOneUser/${email}`);
 
@@ -203,8 +204,8 @@ function Signup() {
       } else {
         try {
           const userData = {
-            name,
-            password,
+            name, 
+            password: hashedPassword,
             email,
             department: departmentValue,
             level: userTypeValue,
@@ -240,11 +241,11 @@ function Signup() {
         <h1>Create Account</h1>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <form onSubmit={handleSignUp}>
-          <p>Name</p>
+          <p>Full Name</p>
           <input
             type="text"
             name="name"
-            placeholder="Enter Name"
+            placeholder="Enter Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
