@@ -22,12 +22,13 @@ function StudentFootball() {
         setModalIsOpen(value);
     };
 
-    const selectedOption = JSON.parse(time);
-    const startTime = selectedOption.start;
-    const endTime = selectedOption.end;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setVenueVariable(1);
+        const selectedOption = JSON.parse(time);
+        const startTime = selectedOption.start;
+        const endTime = selectedOption.end;
 
         //converting react date format to mysql DATE datatype format
         const dt = new Date(date)
