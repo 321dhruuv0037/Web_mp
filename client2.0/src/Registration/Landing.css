@@ -15,19 +15,20 @@
   .avatar {
     width: 100px;
     height: 100px;
+    object-fit: scale-down;
     border-radius: 50%;
     position: absolute;
     top: -50px;
     left: calc(50% - 50px);
   }
   
-  .loginbox {
-    max-width: 400px;
-    width: 90%;
+  .landing-option {
+    max-width: 500px;
+    width: 100%;
     height: auto; /* Increase the height as needed */
     border-radius: 25px;
     background: rgb(252, 250, 247);
-    color: white;
+    color: black;
     top: 50%;
     left: 50%;
     position: absolute;
@@ -36,7 +37,7 @@
     padding: 50px 30px; /* reduce the padding */
   }
   
-  h1 {
+  .landing-option h1 {
     margin: 0;
     padding: 0 0 20px;
     text-align: center;
@@ -44,7 +45,7 @@
     color: rgb(94, 78, 78);
   }
   
-  .loginbox p {
+  .landing-option p {
     margin: 10px;
     padding: 0;
     font-weight: bold;
@@ -52,13 +53,7 @@
     color: rgb(94, 78, 78);
   }
   
-  .loginbox input {
-    width: 100%;
-    margin-top: 10px; /* Reduce the margin-top */
-  }
-  
-
-  
+ 
 
   
 /* LinkStyles.css */
@@ -69,15 +64,18 @@
   border: none;
   outline: none;
   height: 50px;
-  background: linear-gradient(90deg, black 0%, rgb(75, 14, 154, 1) 35%, cyan 100%);
-  
-  font-size: 28px;
+  /* background: linear-gradient(90deg, black 0%, rgb(75, 14, 154, 1) 35%, cyan 100%); */
+  border: black solid 1px;
+  color: black;
+  /*color: #fff;*/
+  font-size: 18px;
   border-radius: 20px;
   padding: 15px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+  transition: 0.5s ease-in-out;
 }
 
 
@@ -85,7 +83,7 @@
   
   .custom-link:hover {
     cursor: pointer;
-    background: #e19c13;
+    background: #fdf2cd;
     color: #000;
   }
   

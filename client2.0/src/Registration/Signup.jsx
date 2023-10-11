@@ -211,7 +211,7 @@ function Signup() {
           });
 
           if (response.status === 200) {
-            history('/logins');
+            history('/signups');
           } else {
             console.error('Server error');
           }
@@ -226,8 +226,8 @@ function Signup() {
 
 
   return (
-    <div className='login'>
-      <div className="loginbox">
+    <div className='signup'>
+      <div className="signupbox">
         <img src="DBIT_Logo.png" className="avatar" alt="Avatar" />
         <h1>Create Account</h1>
         {error && <p style={{ color: 'red' }}>{error}</p>}

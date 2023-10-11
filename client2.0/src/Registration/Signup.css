@@ -1,127 +1,133 @@
 * {
-    margin: 0;
-    padding: 0px;
-    font-family: sans-serif;
-  }
-  
-  body {
-    height: 100vh;
-    width: 100%;
-  
-    background-repeat: no-repeat;
-   
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    position: absolute;
-    top: -50px;
-    left: calc(50% - 50px);
-  }
-  
-  .loginbox {
-    max-width: 500px; /* reduce the width */
-    width: 90%; /* set width as a percentage for responsiveness */
-    height: auto; /* remove fixed height */
-    border-radius: 25px;
-    background: rgb(252, 250, 247);
-    color: white;
-    top: 52%;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    box-sizing: border-box;
-    padding: 50px 30px; /* reduce the padding */
-  }
-  
-  h1 {
-    margin: 0;
-    padding: 0 0 20px;
-    text-align: center;
-    font-size: 32px;
-    color: rgb(94, 78, 78);
-  }
-  
-  .loginbox p {
-    margin: 10px;
-    padding: 0;
-    font-weight: bold;
-    font-size: 22px;
-    color: rgb(94, 78, 78);
-  }
-  
-  .loginbox input {
-    width: 100%;
-    margin-top: 10px; /* Reduce the margin-top */
-  }
-  
-  .loginbox input[type="text"],
-  .loginbox input[type="tel"],
-  .loginbox input[type="password"] {
-    border: none;
-    border-bottom: 1px solid rgb(17, 15, 15);
-    background: transparent;
-    outline: none;
-    height: 40px;
-    color: black;
-    font-size: 26px;
-    margin-top: 10px; /* Adjusted margin-top */
-    margin-left: 10px; /* Added margin-left for placeholders */
-  }
-  
-  .loginbox input[type="submit"] {
-    margin-top: 30px;
-    border: none;
-    outline: none;
-    height: 40px;
-    border: black solid 1px;
-    color: black;
-    /*color: #fff;*/
-    font-size: 18px;
-    border-radius: 20px;
-  }
-  
-  .loginbox input[type="submit"]:hover {
-    cursor: pointer;
-    background: #a5a49d;
-    color: #000;
-  }
-  
-  .loginbox a {
-    display: block;
-    text-decoration: none;
-    font-size: 22px;
-    line-height: 20px;
-    color: rgb(244, 241, 241);
-    margin-top: 20px; /* reduce the margin */
-    text-align: center;
-  }
-  
-  .loginbox a:hover {
-    color: #ffc107;
-    color: black;
-  }
+  margin: 0;
+  padding: 0px;
+  font-family: sans-serif;
+}
 
-  .create a{
-    text-decoration: none;
-    font-size: 22px;
-    line-height: 20px;
-    color: rgb(108, 104, 104);
-    margin-top: 20px; /* reduce the margin */
-    text-align: center;
-  }
+body {
+  height: 100vh;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 
-  /* Add these styles to your Signup.css file or component */
+.avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: scale-down;
+  border-radius: 50%;
+  position: absolute;
+  top: -50px;
+  left: calc(50% - 50px);
+}
+
+.signupbox {
+  max-width: 500px;
+  /* reduce the width */
+  width: 90%;
+  /* set width as a percentage for responsiveness */
+  height: auto;
+  /* remove fixed height */
+  border-radius: 25px;
+  background: rgb(252, 250, 247);
+  color: white;
+  top: 52%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  padding: 50px 30px 25px;
+  /* reduce the padding */
+  margin: 2rem;
+}
+
+.signupbox h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 32px;
+  color: rgb(94, 78, 78);
+}
+
+.signupbox p {
+  margin: 1rem 1rem 0 1rem;
+  padding: 0;
+  font-weight: bold;
+  font-size: 22px;
+  color: rgb(94, 78, 78);
+}
+
+.signupbox input {
+  width: 90%;
+}
+
+.signupbox input[type="text"],
+.signupbox input[type="tel"],
+.signupbox input[type="password"] {
+  border: none;
+  border-bottom: 1px solid rgb(17, 15, 15);
+  background: transparent;
+  outline: none;
+  height: 40px;
+  color: black;
+  font-size: 22px;
+  margin-left: 1rem;
+}
+
+.signupbox input[type="submit"] {
+  width: 100%;
+  margin-top: 30px;
+  border: none;
+  outline: none;
+  height: 40px;
+  border: black solid 1px;
+  color: black;
+  /*color: #fff;*/
+  font-size: 18px;
+  border-radius: 20px;
+  transition: 0.5s ease-in-out;
+}
+
+.signupbox input[type="submit"]:hover {
+  cursor: pointer;
+  background: #dbe9f1;
+  color: #000;
+}
+
+.signupbox a {
+  display: block;
+  text-decoration: none;
+  font-size: 22px;
+  line-height: 20px;
+  color: rgb(244, 241, 241);
+  margin-top: 20px;
+  /* reduce the margin */
+  text-align: center;
+  transition: 0.5s ease-in-out;
+}
+
+.signupbox a:hover {
+  color: #ffc107;
+  color: black;
+}
+
+.create a {
+  text-decoration: none;
+  font-size: 22px;
+  line-height: 20px;
+  color: rgb(108, 104, 104);
+  margin-top: 20px;
+  /* reduce the margin */
+  text-align: center;
+}
+
+/* Add these styles to your Signup.css file or component */
 
 /* Style the parent container (flex container) */
 .d-flex {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px; /* Adjust the margin as needed */
+
 }
 
 /* Style the Department and User Type dropdowns */
@@ -129,6 +135,7 @@
   width: 100%;
   height: 40px;
   border: none;
+  margin-left: 10px;
   border-bottom: 1px solid rgb(17, 15, 15);
   background: transparent;
   outline: none;
@@ -138,9 +145,11 @@
 
 /* Style the select options */
 .w-50 select option {
-  background-color: #fff; /* Background color for options */
-  color: #000; /* Text color for options */
-  
+  background-color: #f1f1f1;
+  /* Background color for options */
+  color: #000;
+  /* Text color for options */
+
 }
 
 /* Style the select when hovered */
@@ -151,16 +160,20 @@
 
 /* Style the select when focused */
 .w-50 select:focus {
-  border: 1px solid rgba(30, 85, 250, 0.47);
-  background-color: #fff;
+  /* border: 1px solid rgba(30, 85, 250, 0.47); */
+  background-color: transparent;
 }
 
 
-  /* Media Queries for Responsive Background */
+/* Media Queries for Responsive Background */
 @media (max-width: 768px) {
   body {
     background-size: cover;
     background-position: top;
+  }
+
+  .signupbox {
+    margin: 0;
   }
 }
 
@@ -170,4 +183,21 @@
     background-position: center;
   }
 }
-  
+
+@media (max-width: 450px) {
+  .avatar {
+    width: 20%;
+    height: 20%;
+    object-fit: scale-down;
+    left: calc(53% - 50px);
+  }
+  .w-50 {
+    width: 60%!important;
+  }
+}
+
+@media (min-width: 900px) {
+  .signup {
+    height: 100vh;
+  }
+}

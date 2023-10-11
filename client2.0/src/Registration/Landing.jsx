@@ -9,7 +9,7 @@ function Landing() {
 
   return (
     <div className='login'>
-      <div className="loginbox">
+      <div className="landing-option">
         <img src="DBIT_Logo.png" className="avatar" alt="Avatar" />
         <h1>Login Methods</h1>
         {error && <p style={{ color: 'red' }}>{error}</p>}
