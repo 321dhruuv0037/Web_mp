@@ -3,39 +3,49 @@ let userGlobalValue = 0;
 let venueGlobalValue = 0;
 let levelGlobalValue = 0;
 let emailGlobalValue = '';
+let nameGlobalValue = '';
 
 //USER ID
 export function getUserVariable() {
-  return userGlobalValue;
+    return userGlobalValue;
 }
 
 export function setUserVariable(newValue) {
-  userGlobalValue = newValue;
+    userGlobalValue = newValue;
 }
 
 //VENUE ID
 export function getVenueVariable() {
-  return venueGlobalValue;
+    return venueGlobalValue;
 }
 
 export function setVenueVariable(newValue) {
-  venueGlobalValue = newValue;
+    venueGlobalValue = newValue;
 }
 
 //LEVEL
-export function getLevelVariable(){
-  return levelGlobalValue;
+export function getLevelVariable() {
+    return levelGlobalValue;
 }
 
 export function setLevelVariable(newValue) {
-  levelGlobalValue = newValue;
+    levelGlobalValue = newValue;
 }
 
 //EMAIL
-export function getEmailVariable(){
-  return emailGlobalValue;
+export function getEmailVariable() {
+    return emailGlobalValue;
 }
 
 export function setEmailVariable(newValue) {
-  emailGlobalValue = newValue;
+    emailGlobalValue = newValue;
+}
+
+//NAME
+export function getNameVariable() {
+    return nameGlobalValue;
+}
+
+export function setNameVariable(newValue) {
+    nameGlobalValue = newValue;
 }

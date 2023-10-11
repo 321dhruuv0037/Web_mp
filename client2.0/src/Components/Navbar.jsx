@@ -118,9 +118,9 @@ class Navbar extends React.Component {
               </li>
             </ul>
           </div>
-                    <Link className="user-icon" to="/landing" >
-                      <FaUser />
-                    </Link>
+          <Link to="/logins" className="user-icon">
+            <FaUser />
+          </Link>
         </div>
       </nav>
     );
