@@ -1,105 +1,106 @@
 /* Custom CSS for Navbar */
 .navbar {
-    background-color: rgb(18, 18, 19) ;
-    padding: 20px 80px !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06) !important;
-  }
-  
-  .navbar-brand {
-    font-size: 24px !important;
-    color: #fff !important;
-  }
-  
-  .navbar-toggler {
-    font-size: 24px !important;
-    background-color: #17cf97 !important;
-    margin-left: auto;
-  }
-  .user-icon{
-    font-size: 34px !important;
-    color: #17cf97 !important;
-    margin-left: 10px;
-  }
-  
-  .navbar-toggler-icon {
-    color: #fff !important;
-  }
-  
-  .navbar-nav .nav-link {
-    font-size: 1.3rem !important;
-    font-weight: 600 !important;
-    color: #fff !important;
-  }
-  
-  .navbar-nav .nav-link:hover {
-    color: #17cf97 !important;
-  }
-  
-  .offcanvas {
-    background-color: #1b2430 !important;
-  }
-  
-  .offcanvas-title {
-    color: #fff !important;
-  }
-  
-  .btn-close-white {
-    color: #fff !important;
-  }
-  
-  .dropdown-menu-dark {
-    background-color: #1b2430 !important;
-    color: #fff !important;
-  }
-  
-  .dropdown-item {
-    color: #fff !important;
-  }
-  
-  .dropdown-item:hover {
-    background-color: #17cf97 !important;
-    color: #fff !important;
-  }
-  
-  .form-control {
-    background-color: #1b2430 !important;
-    color: #fff !important;
-    border: 1px solid #17cf97 !important;
-  }
-  
-  .btn-success {
-    background-color: #17cf97 !important;
-    border: none !important;
-  }
-  
-  .btn-success:hover {
-    background-color: #138a6e !important;
-  }
-  
+  background-color: rgb(18, 18, 19);
+  padding: 20px 80px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06) !important;
+}
+
+.navbar-brand {
+  font-size: 24px !important;
+  color: #fff !important;
+}
+
+.navbar-toggler {
+  font-size: 24px !important;
+  background-color: #17cf97 !important;
+  margin-left: auto;
+}
+
+.user-icon {
+  font-size: 34px !important;
+  color: #17cf97 !important;
+  margin-left: 10px;
+}
+
+.navbar-toggler-icon {
+  color: #fff !important;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #17cf97 !important;
+}
+
+.offcanvas {
+  background-color: #1b2430 !important;
+}
+
+.offcanvas-title {
+  color: #fff !important;
+}
+
+.btn-close-white {
+  color: #fff !important;
+}
+.dropdown-menu.show {
+  display: block;
+  background-color: black;
+}
+
+
+.dropdown-menu-dark {
+  background-color: #1b2430 !important;
+  color: #fff !important;
+}
+
+.dropdown-item {
+  color: #fff !important;
+}
+
+.dropdown-item:hover {
+  background-color: #17cf97 !important;
+  color: #fff !important;
+}
+
+.form-control {
+  background-color: #1b2430 !important;
+  color: #fff !important;
+  border: 1px solid #17cf97 !important;
+}
+
+.btn-success {
+  background-color: #17cf97 !important;
+  border: none !important;
+}
+
+.btn-success:hover {
+  background-color: #138a6e !important;
+}
+
+.navbar-title {
+  font-size: 2.5rem;
+  margin: 0;
+  padding: 0;
+  color: white;
+  text-align: left;
+  flex-grow: 1;
+}
+
+/* Media query for screens smaller than 768px */
+@media (max-width: 768px) {
   .navbar-title {
-    font-size: 2.5rem; /* Default font size */
-    margin: 0;
-    padding: 0;
-    color: white;
-    text-align: center;
-
-    flex-grow: 1; /* Allow the title to take available space */
+    font-size: 2rem;
   }
+}
 
-  
-  
-  /* Media query for screens smaller than 768px */
-  @media (max-width: 768px) {
-    .navbar-title {
-      font-size: 2rem; /* Adjust font size for smaller screens */
-    }
+/* Media query for screens smaller than 576px */
+@media (max-width: 576px) {
+  .navbar-title {
+    font-size: 1.5rem;
   }
-  
-  /* Media query for screens smaller than 576px */
-  @media (max-width: 576px) {
-    .navbar-title {
-      font-size: 1.5rem; /* Further adjust font size for even smaller screens */
-    }
-  }
-  
-
+}

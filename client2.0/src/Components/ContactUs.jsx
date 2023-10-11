@@ -19,28 +19,39 @@ class ContactUs extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
 
-        const mailData = {
-            name: this.state.name,
-            email: this.state.email,
-            message: this.state.message,
-        };
+        if (this.state.name === '') {
+            alert("Enter name");
+            return;
+        } else if (this.state.email) {
+            alert("Enter email");
+            return;
+        } else if (this.state.message) {
+            alert("Enter message");
+            return;
+        } else {
+            const mailData = {
+                name: this.state.name,
+                email: this.state.email,
+                message: this.state.message,
+            };
 
-        try {
-            const response = await fetch(`http://localhost:3000/sendEmail`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(mailData),
-            });
+            try {
+                const response = await fetch(`http://localhost:3000/sendEmail`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(mailData),
+                });
 
-            if (response.status === 200) {
-                console.log('Done');
-            } else {
-                console.error('Server error');
+                if (response.status === 200) {
+                    console.log('Done');
+                } else {
+                    console.error('Server error');
+                }
+            } catch (error) {
+                console.error('An error occurred', error);
             }
-        } catch (error) {
-            console.error('An error occurred', error);
         }
     }
 

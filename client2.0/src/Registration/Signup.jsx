@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../Registration/Signup.css'; // Create this CSS file for styling
 import { useNavigate } from 'react-router-dom';
+import md5 from 'md5';
 
 
 function Signup() {
@@ -179,10 +180,20 @@ function Signup() {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
+
+    const nameRegex = /^[A-Za-z\s]+$/;
+
+    if(!nameRegex.test(name)){
+      setError('Enter valid name')
+      return;
+    }
+
     //password validation
     if (!isPasswordValid(password)) {
       return;
     }
+
+    setPassword(md5(password));
 
     //email validation
     if(!isEmailValid(email)) {

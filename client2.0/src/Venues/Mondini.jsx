@@ -1,229 +1,104 @@
-import React, { useState } from 'react';
-import img5 from '../assets/img5.jpg'; // Import the background image
+import React from 'react';
+import venueImage from '../assets/img5.jpg'; // Import the venue image
+import backgroundImage from '../assets/img10.jpeg'; // Import the background image
+import { Link } from 'react-router-dom'; // Import the Link component for login
 
 function Mondini() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [termsAgreed, setTermsAgreed] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission (e.g., send data to a backend API)
+  const venueDetails = {
+    name: 'Seminar',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel purus ac odio malesuada tincidunt. Sed euismod scelerisque eleifend. Donec efficitur pharetra tortor, in facilisis tortor hendrerit non. Duis sit amet iaculis tellus.',
+    location: ' Location: C Wing,DBIT Campus',
+    capacity: 'Capacity: 200 people',
+    openHours: 'Open Hours: 8:00 AM - 10:00 PM',
   };
 
   const containerStyles = {
-    maxWidth: '800px', // Increased form width
-    width: '700px',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    maxHeight: '700px',
-    height: 'auto', // Changed height to auto for dynamic sizing
-    padding: '30px', // Increased padding
-    borderRadius: '20px',
-    textAlign: 'center',
-    boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.3)', // Added box shadow for a subtle effect
-    flexDirection: 'column',
-  };
-
-  const inputStyles = {
-    width: '100%',
-    padding: '10px', // Adjusted padding
-    marginTop: '10px', // Increased margin-top
-    marginBottom: '10px', // Added margin-bottom
-    
-    borderRadius: '10px', // Increased border radius
-    fontSize: '16px', // Increased font size for better readability
-  };
-
-  const nameEmailContainerStyles = {
-    display: 'flex',
-    flexWrap: 'nowrap', // Allow wrapping on smaller screens
-    justifyContent: 'space-between',
-  };
-
-  const nameInputStyles = {
-    flex: 1,
-    marginRight: '10px', // Adjust margin as needed
-  };
-
-  const dateTimeContainerStyles = {
-    display: 'flex',
-    flexWrap: 'nowrap', // Allow wrapping on smaller screens
-    justifyContent: 'space-between',
-  };
-
-  const dateInputStyles = {
-    flex: 1,
-    marginRight: '20px', // Adjust margin as needed
-  };
-  const timeInputStyles = {
-    flex: 1,
-  };
-  const buttonStyles = {
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '10px', // Increased border radius
-    padding: '12px 24px', // Adjusted padding for the button
-    cursor: 'pointer',
-    fontSize: '18px', // Increased font size for the button
-  };
-  /* Add styles for terms and conditions alignment */
-const termsContainerStyles = {
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: '10px', // Adjust spacing
-  };
-  
-  /* Add styles for the terms and conditions checkbox */
-  const termsCheckboxStyles = {
-    marginRight: '5px', // Adjust spacing
-  };
-
-  const submitButtonStyles = {
-    ...buttonStyles, // Spread the buttonStyles object to inherit its properties
-    backgroundColor: '#007bff',
-    color: '#fff',
-  };
-
-  const submitButtonHoverStyles = {
-    ...submitButtonStyles, // Spread the submitButtonStyles object to inherit its properties
-    backgroundColor: '#0056b3',
-  };
-
-  const backgroundStyles = {
-    margin: 0,
-    padding: 0,
-    backgroundImage: `url(${img5})`, // Set the background image URL
+    backgroundImage: `url(${backgroundImage})`, // Set the background image URL
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     fontFamily: 'Arial, sans-serif',
+    minHeight: '100vh', // Ensure the background covers the entire viewport height
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: '100vh',
     color: '#fff',
   };
 
+  const contentStyles = {
+    maxWidth: '800px', // Decrease the container width
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: '40px', // Increase the padding
+    borderRadius: '20px',
+    boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.3)',
+    textAlign: 'center',
+    marginTop: '20px', // Adjust spacing
+    color: '#fff',
+    display: 'flex', // Display image and description side by side
+    flexDirection: 'column', // Stack children vertically
+    alignItems: 'center', // Center horizontally
+  };
+
+  const imageStyles = {
+    maxWidth: '50%', // Decrease the image size
+    height: 'auto',
+  };
+
+  const descriptionStyles = {
+    textAlign: 'left',
+    marginLeft: '20px',
+    padding: '20px 20px', // Add margin to separate image and description
+  };
+
+  const noteStyles = {
+    fontSize: '18px',
+    marginTop: '0px', // Adjust spacing from the description
+    marginBottom: '0px', // Adjust spacing from the login button
+  };
+
+  const loginButtonStyles = {
+    backgroundColor: '#17cf97', // Button background color
+    color: '#fff', // Text color
+    fontSize: '20px',
+    padding: '10px 20px', // Padding for the button
+    textDecoration: 'none', // Remove underlines
+    borderRadius: '10px', // Rounded corners
+    marginTop: '5px', // Spacing from the note section
+    display: 'inline-block', // Display as a block-level element
+    cursor: 'pointer',
+    transition: 'background-color 0.3s', // Add a hover effect
+  };
+
+  const loginButtonHoverStyles = {
+    ...loginButtonStyles,
+    backgroundColor: '#138a6e', // Hover background color
+  };
+
+  // Media Query for smaller screens
+  const mediaQueryStyles = {
+    '@media (max-width: 567px)': {
+      imageStyles: {
+        maxWidth: '80%', // Increase the width of the image for smaller screens
+      },
+      descriptionStyles: {
+        padding: '10px', // Remove padding from the sides for description
+      },
+    },
+  };
+
   return (
-    <div style={backgroundStyles}>
-      <div className="football-container" style={containerStyles}>
-        <h2>Book Mondini Hall</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="name-container" style={nameEmailContainerStyles}>
-            <div className="name-input" style={nameInputStyles}>
-              <label>
-                First Name:
-                <input
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
-                  style={inputStyles}
-                />
-              </label>
-            </div>
-            <div className="name-input" style={nameInputStyles}>
-              <label>
-                Last Name:
-                <input
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  required
-                  style={inputStyles}
-                />
-              </label>
-            </div>
-          </div>
-          <div className="email-phone-container" style={nameEmailContainerStyles}>
-            <div className="email-phone-input" style={nameEmailContainerStyles}>
-              <div className="email-input" style={inputStyles}>
-                <label>
-                  Email Address:
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={inputStyles}
-                  />
-                </label>
-              </div>
-              <div className="phone-input" style={inputStyles}>
-                <label>
-                  Phone Number:
-                  <input
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    required
-                    style={inputStyles}
-                  />
-                </label>
-                </div>
-            </div>
-          </div>
-          <div className="date-time-container" style={dateTimeContainerStyles}>
-            <div className="date-input" style={dateInputStyles}>
-              <label>
-                Date:
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  required
-                  style={inputStyles}
-                />
-              </label>
-            </div>
-            <div className="time-input" style={dateInputStyles}>
-              <label>
-                Time:
-                <input
-                  type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  required
-                  style={inputStyles}
-                />
-              </label>
-            </div>
-          </div>
-          <div className="payment-container">
-          <label>
-            Payment Method:
-            <select
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              required
-              style={inputStyles}
-            >
-              <option value="">Select Payment Method</option>
-              <option value="creditCard">Credit Card</option>
-              <option value="cash">Cash</option>
-              <option value="onlinePayment">Online Payment</option>
-            </select>
-          </label>
-          </div>
-          <div className="terms-container" style={termsContainerStyles}>
-          <label>
-            <input
-              type="checkbox"
-              checked={termsAgreed}
-              onChange={() => setTermsAgreed(!termsAgreed)}
-              required
-            />{' '}
-            I agree to the terms and conditions
-          </label>
-          </div>
-          <button type="submit" style={submitButtonStyles}>Book Court</button>
-        </form>
+    <div style={containerStyles}>
+      <div style={contentStyles}>
+        <img src={venueImage} alt={venueDetails.name} style={{ ...imageStyles, ...mediaQueryStyles.imageStyles }} />
+        <div style={{ ...descriptionStyles, ...mediaQueryStyles.descriptionStyles }}>
+          <h2>{venueDetails.name}</h2>
+          <p>{venueDetails.description}</p>
+          <p>{venueDetails.location}</p>
+          <p>{venueDetails.capacity}</p>
+          <p>{venueDetails.openHours}</p>
+        </div>
+        <p style={noteStyles}>Please login to book this venue.</p> {/* Note prompting the user to login */}
+        <Link to="/landing" style={loginButtonStyles}>Login</Link> {/* Login link styled as a button */}
       </div>
     </div>
   );

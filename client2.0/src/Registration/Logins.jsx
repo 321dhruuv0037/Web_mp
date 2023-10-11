@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './Landing.css'; // Assuming Login.css is in the same directory as this component
 import {Link, useNavigate} from 'react-router-dom'; // Import Link
 import {setUserVariable, setLevelVariable, setEmailVariable, setNameVariable} from '../global';
+import md5 from'md5';
 
 
 function Logins() {
@@ -13,6 +14,9 @@ function Logins() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+
+        setPassword(md5(password));
+
         // You can add your login logic here and handle errors
         if (!email || !password) {
             setError('Please enter both email and password.');
