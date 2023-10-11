@@ -210,7 +210,7 @@ function Signup() {
             level: userTypeValue,
           };
 
-          const response = await fetch(`http://localhost:3000/addUser`, {
+          const response = await fetch(`http://localhost:3000/api/users/addUser`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

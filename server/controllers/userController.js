@@ -6,18 +6,23 @@ const Booking = db.bookings;
 
 // 1. create user
 const addUser = async (req, res) => {
-  const {name,password,email,department,level} = req.body;
-  let info = {
-    name: name,
-    password: password,
-    email: email,
-    department: department,
-    level: level,
-  };
+  try {
+        const {name, password, email, department, level} = req.body;
+        let info = {
+            name: name,
+            password: password,
+            email: email,
+            department: department,
+            level: level,
+        };
 
-  const user = await User.create(info);
-  res.status(200).send(user);
-  console.log(user);
+        const user = await User.create(info);
+        res.status(200).send(user);
+        console.log(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: "Internal server error"});
+    }
 };
 
 // 2. get all users
